@@ -1,0 +1,580 @@
+{
+  "item": [
+    {
+      "id": "a1b2c3d4-0001-4001-8001-000000000001",
+      "name": "Images",
+      "description": {
+        "content": "Auto-generate images from templates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0001-4001-8001-000000000002",
+          "name": "Create an image",
+          "request": {
+            "name": "Create an image",
+            "description": {},
+            "url": {
+              "path": ["v2", "images"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"title\",\n      \"text\": \"Hello World\",\n      \"color\": \"#000000\"\n    }\n  ],\n  \"webhook_url\": \"https://example.com/webhook\",\n  \"transparent\": false,\n  \"render_pdf\": false,\n  \"metadata\": \"<string>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0001-4001-8001-000000000003",
+          "name": "Retrieve an image",
+          "request": {
+            "name": "Retrieve an image",
+            "description": {},
+            "url": {
+              "path": ["v2", "images", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0001-4001-8001-000000000004",
+          "name": "List images",
+          "request": {
+            "name": "List images",
+            "description": {},
+            "url": {
+              "path": ["v2", "images"],
+              "host": ["{{baseUrl}}"],
+              "query": [{ "key": "page", "value": "1" }],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1b2c3d4-0002-4001-8001-000000000001",
+      "name": "Videos",
+      "description": {
+        "content": "Render videos from video templates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0002-4001-8001-000000000002",
+          "name": "Create a video",
+          "request": {
+            "name": "Create a video",
+            "description": {},
+            "url": {
+              "path": ["v2", "videos"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video_template\": \"<string>\",\n  \"input_media_url\": \"https://example.com/input.mp4\",\n  \"modifications\": [\n    { \"name\": \"title\", \"text\": \"Hello\" }\n  ],\n  \"webhook_url\": \"https://example.com/webhook\",\n  \"create_gif_preview\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0002-4001-8001-000000000003",
+          "name": "Retrieve a video",
+          "request": {
+            "name": "Retrieve a video",
+            "description": {},
+            "url": {
+              "path": ["v2", "videos", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0002-4001-8001-000000000004",
+          "name": "List videos",
+          "request": {
+            "name": "List videos",
+            "description": {},
+            "url": {
+              "path": ["v2", "videos"],
+              "host": ["{{baseUrl}}"],
+              "query": [{ "key": "page", "value": "1" }],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1b2c3d4-0003-4001-8001-000000000001",
+      "name": "Collections",
+      "description": {
+        "content": "Generate multiple images from a template set.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0003-4001-8001-000000000002",
+          "name": "Create a collection",
+          "request": {
+            "name": "Create a collection",
+            "description": {},
+            "url": {
+              "path": ["v2", "collections"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template_set\": \"<string>\",\n  \"modifications\": [\n    { \"name\": \"title\", \"text\": \"Hello World\" }\n  ],\n  \"webhook_url\": \"https://example.com/webhook\",\n  \"transparent\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0003-4001-8001-000000000003",
+          "name": "Retrieve a collection",
+          "request": {
+            "name": "Retrieve a collection",
+            "description": {},
+            "url": {
+              "path": ["v2", "collections", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0003-4001-8001-000000000004",
+          "name": "List collections",
+          "request": {
+            "name": "List collections",
+            "description": {},
+            "url": {
+              "path": ["v2", "collections"],
+              "host": ["{{baseUrl}}"],
+              "query": [{ "key": "page", "value": "1" }],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1b2c3d4-0004-4001-8001-000000000001",
+      "name": "Screenshots",
+      "description": {
+        "content": "Capture web page screenshots by URL.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0004-4001-8001-000000000002",
+          "name": "Create a screenshot",
+          "request": {
+            "name": "Create a screenshot",
+            "description": {},
+            "url": {
+              "path": ["v2", "screenshots"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.example.com\",\n  \"webhook_url\": \"https://example.com/webhook\",\n  \"width\": 1200,\n  \"mobile\": false,\n  \"language\": \"en\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0004-4001-8001-000000000003",
+          "name": "Retrieve a screenshot",
+          "request": {
+            "name": "Retrieve a screenshot",
+            "description": {},
+            "url": {
+              "path": ["v2", "screenshots", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0004-4001-8001-000000000004",
+          "name": "List screenshots",
+          "request": {
+            "name": "List screenshots",
+            "description": {},
+            "url": {
+              "path": ["v2", "screenshots"],
+              "host": ["{{baseUrl}}"],
+              "query": [{ "key": "page", "value": "1" }],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1b2c3d4-0005-4001-8001-000000000001",
+      "name": "Animated GIFs",
+      "description": {
+        "content": "Build animated GIFs from template frames.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0005-4001-8001-000000000002",
+          "name": "Create an animated GIF",
+          "request": {
+            "name": "Create an animated GIF",
+            "description": {},
+            "url": {
+              "path": ["v2", "animated_gifs"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template\": \"<string>\",\n  \"frames\": [\n    [ { \"name\": \"title\", \"text\": \"Frame 1\" } ],\n    [ { \"name\": \"title\", \"text\": \"Frame 2\" } ]\n  ],\n  \"fps\": 1,\n  \"loop\": true,\n  \"webhook_url\": \"https://example.com/webhook\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0005-4001-8001-000000000003",
+          "name": "Retrieve an animated GIF",
+          "request": {
+            "name": "Retrieve an animated GIF",
+            "description": {},
+            "url": {
+              "path": ["v2", "animated_gifs", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0005-4001-8001-000000000004",
+          "name": "List animated GIFs",
+          "request": {
+            "name": "List animated GIFs",
+            "description": {},
+            "url": {
+              "path": ["v2", "animated_gifs"],
+              "host": ["{{baseUrl}}"],
+              "query": [{ "key": "page", "value": "1" }],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1b2c3d4-0006-4001-8001-000000000001",
+      "name": "Templates",
+      "description": {
+        "content": "Manage templates and template sets.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0006-4001-8001-000000000002",
+          "name": "List templates",
+          "request": {
+            "name": "List templates",
+            "description": {},
+            "url": {
+              "path": ["v2", "templates"],
+              "host": ["{{baseUrl}}"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "tag", "value": "<string>", "disabled": true },
+                { "key": "name", "value": "<string>", "disabled": true },
+                { "key": "extended", "value": "true", "disabled": true }
+              ],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0006-4001-8001-000000000003",
+          "name": "Retrieve a template",
+          "request": {
+            "name": "Retrieve a template",
+            "description": {},
+            "url": {
+              "path": ["v2", "templates", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0006-4001-8001-000000000004",
+          "name": "Update a template",
+          "request": {
+            "name": "Update a template",
+            "description": {},
+            "url": {
+              "path": ["v2", "templates", ":uid"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": [{ "key": "uid", "value": "<string>" }]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"metadata\": \"<string>\",\n  \"tags\": [\"<string>\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0006-4001-8001-000000000005",
+          "name": "List template sets",
+          "request": {
+            "name": "List template sets",
+            "description": {},
+            "url": {
+              "path": ["v2", "template_sets"],
+              "host": ["{{baseUrl}}"],
+              "query": [{ "key": "page", "value": "1" }],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1b2c3d4-0007-4001-8001-000000000001",
+      "name": "Fonts",
+      "description": {
+        "content": "Reference fonts and effects.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1b2c3d4-0007-4001-8001-000000000002",
+          "name": "List available fonts",
+          "request": {
+            "name": "List available fonts",
+            "description": {},
+            "url": {
+              "path": ["v2", "fonts"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        },
+        {
+          "id": "a1b2c3d4-0007-4001-8001-000000000003",
+          "name": "List available image effects",
+          "request": {
+            "name": "List available image effects",
+            "description": {},
+            "url": {
+              "path": ["v2", "effects"],
+              "host": ["{{baseUrl}}"],
+              "query": [],
+              "variable": []
+            },
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": { "disableBodyPruning": true }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b9f0e1a2-c3d4-4e5f-8a9b-0c1d2e3f4a5b",
+    "name": "Bannerbear API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Auto-generate images and videos from templates via the Bannerbear REST API. Most create operations are asynchronous (202 Accepted) and delivered by webhook or polling.\n\nContact Support:\n Name: Bannerbear Support\n URL: https://www.bannerbear.com/help/",
+      "type": "text/plain"
+    }
+  }
+}

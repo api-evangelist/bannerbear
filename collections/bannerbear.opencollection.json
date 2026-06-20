@@ -1,0 +1,197 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bannerbear API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Images", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create an image", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/images",
+            "body": {
+              "type": "json",
+              "data": "{\"template\":\"<string>\",\"modifications\":[{\"name\":\"title\",\"text\":\"Hello World\"}],\"webhook_url\":\"https://example.com/webhook\",\"transparent\":false,\"render_pdf\":false}"
+            }
+          },
+          "docs": "Create an image by applying modifications to a template. Returns 202 Accepted on the async host."
+        },
+        {
+          "info": { "name": "Retrieve an image", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/images/:uid" },
+          "docs": "Retrieve a single image by uid; poll until status is completed or failed."
+        },
+        {
+          "info": { "name": "List images", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/images" },
+          "docs": "List images (25 per page)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Videos", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a video", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/videos",
+            "body": {
+              "type": "json",
+              "data": "{\"video_template\":\"<string>\",\"input_media_url\":\"https://example.com/input.mp4\",\"modifications\":[{\"name\":\"title\",\"text\":\"Hello\"}],\"webhook_url\":\"https://example.com/webhook\"}"
+            }
+          },
+          "docs": "Render a video from a video template using a build pack."
+        },
+        {
+          "info": { "name": "Retrieve a video", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/videos/:uid" },
+          "docs": "Retrieve a single video by uid."
+        },
+        {
+          "info": { "name": "List videos", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/videos" },
+          "docs": "List videos."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Collections", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a collection", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/collections",
+            "body": {
+              "type": "json",
+              "data": "{\"template_set\":\"<string>\",\"modifications\":[{\"name\":\"title\",\"text\":\"Hello World\"}],\"webhook_url\":\"https://example.com/webhook\"}"
+            }
+          },
+          "docs": "Generate multiple images from a template set."
+        },
+        {
+          "info": { "name": "Retrieve a collection", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/collections/:uid" },
+          "docs": "Retrieve a single collection by uid."
+        },
+        {
+          "info": { "name": "List collections", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/collections" },
+          "docs": "List collections."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Screenshots", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a screenshot", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/screenshots",
+            "body": {
+              "type": "json",
+              "data": "{\"url\":\"https://www.example.com\",\"webhook_url\":\"https://example.com/webhook\",\"width\":1200,\"mobile\":false,\"language\":\"en\"}"
+            }
+          },
+          "docs": "Capture a screenshot of a web page by URL."
+        },
+        {
+          "info": { "name": "Retrieve a screenshot", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/screenshots/:uid" },
+          "docs": "Retrieve a single screenshot by uid."
+        },
+        {
+          "info": { "name": "List screenshots", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/screenshots" },
+          "docs": "List screenshots."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Animated GIFs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create an animated GIF", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/animated_gifs",
+            "body": {
+              "type": "json",
+              "data": "{\"template\":\"<string>\",\"frames\":[[{\"name\":\"title\",\"text\":\"Frame 1\"}],[{\"name\":\"title\",\"text\":\"Frame 2\"}]],\"fps\":1,\"loop\":true,\"webhook_url\":\"https://example.com/webhook\"}"
+            }
+          },
+          "docs": "Build an animated GIF from an array of frames (max 30)."
+        },
+        {
+          "info": { "name": "Retrieve an animated GIF", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/animated_gifs/:uid" },
+          "docs": "Retrieve a single animated GIF by uid."
+        },
+        {
+          "info": { "name": "List animated GIFs", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/animated_gifs" },
+          "docs": "List animated GIFs."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Templates", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List templates", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/templates" },
+          "docs": "List templates (25 per page); filter by tag, name, or extended."
+        },
+        {
+          "info": { "name": "Retrieve a template", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/templates/:uid" },
+          "docs": "Retrieve a single template by uid."
+        },
+        {
+          "info": { "name": "Update a template", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.bannerbear.com/v2/templates/:uid",
+            "body": {
+              "type": "json",
+              "data": "{\"name\":\"<string>\",\"metadata\":\"<string>\",\"tags\":[\"<string>\"]}"
+            }
+          },
+          "docs": "Update a template's name, metadata, tags, or dimensions."
+        },
+        {
+          "info": { "name": "List template sets", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/template_sets" },
+          "docs": "List template sets."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Fonts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List available fonts", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/fonts" },
+          "docs": "List the fonts available to the project."
+        },
+        {
+          "info": { "name": "List available image effects", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.bannerbear.com/v2/effects" },
+          "docs": "List the image effects available to the project."
+        }
+      ]
+    }
+  ]
+}

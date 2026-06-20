@@ -1,0 +1,70 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Bannerbear
+providerId: bannerbear
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Image Generation
+- Video Generation
+- Templates
+- Media
+- Automation
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Bannerbear enforces a documented API rate limit of 30 requests per 10
+  seconds per API key. Separately, each subscription plan caps the number of
+  image/video API credits that can be consumed per month; unlike per-request
+  throttling, the monthly credit cap is a hard quota that cannot be exceeded
+  without upgrading the plan. Async create requests return 202 and do not block
+  on render time, so request-rate limits apply to the submission and polling
+  calls rather than to render duration.
+notes: >-
+  The 30 requests / 10 seconds limit is published in the API reference.
+  Monthly credit ceilings (1,000 / 10,000 / 20,000+) come from the pricing
+  plans. Verify both during reconciliation.
+sources:
+- https://developers.bannerbear.com/
+- https://www.bannerbear.com/pricing/
+responseCodes:
+  throttled: 429
+limits:
+- name: Requests Per 10 Seconds
+  scope: api_key
+  metric: requests
+  limit: 30 per 10 seconds
+  notes: Documented global API rate limit across all endpoints for a given API key.
+- name: Monthly API Credits (Automate)
+  scope: account
+  metric: credits
+  limit: 1000 per month
+  notes: Hard monthly cap on the Automate plan; cannot be exceeded without upgrading.
+- name: Monthly API Credits (Scale)
+  scope: account
+  metric: credits
+  limit: 10000 per month
+  notes: Hard monthly cap on the Scale plan.
+- name: Monthly API Credits (Enterprise)
+  scope: account
+  metric: credits
+  limit: 20000+ per month
+  notes: Starts at 20,000 and scales up to ~2,000,000 via Enterprise arrangements.
+- name: Synchronous Timeout
+  scope: request
+  metric: seconds
+  limit: 10 second timeout
+  notes: Synchronous host (sync.api.bannerbear.com) returns 408 if a render exceeds 10 seconds; use async + webhook/poll instead.
+policies:
+- name: Hard Monthly Quota
+  description: Image/video credit limits cannot be overrun; the account must upgrade to a higher plan to continue generating.
+- name: Backoff Strategy
+  description: Clients should throttle to stay within 30 requests / 10 seconds and implement exponential backoff with jitter on 429 responses.
+- name: Async Submission
+  description: Prefer asynchronous create + webhook or polling over the synchronous host to avoid 10-second timeouts on heavier renders.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,98 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Bannerbear
+providerId: bannerbear
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Image Generation
+- Video Generation
+- Templates
+- Media
+- Automation
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Bannerbear spend. Bannerbear bills a flat monthly
+  subscription per plan, each bundling a fixed pool of image/video API credits
+  and a bandwidth allowance. Cost is driven by which plan tier an account sits
+  on and how many credits and how much bandwidth are consumed within it; PDF
+  rendering consumes extra credits (3x). Because monthly credits are a hard cap
+  rather than metered overage, cost optimization centers on right-sizing the
+  plan tier and minimizing wasted renders.
+notes: >-
+  Plan prices and credit pools are subject to change; verify against the
+  Bannerbear pricing page during reconciliation.
+sources:
+- https://www.bannerbear.com/pricing/
+- https://developers.bannerbear.com/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Bannerbear
+serviceCategory: Media and Content
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Subscription
+  - Usage
+focusColumns:
+  ServiceName: Bannerbear
+  ServiceCategory: Media and Content
+  ProviderName: Bannerbear
+  PublisherName: Bannerbear
+  InvoiceIssuerName: Bannerbear
+  BillingCurrency: USD
+  ChargeCategory: Subscription
+  PricingCategory: Subscription
+meters:
+- name: plan_subscription
+  description: Flat monthly subscription fee for the active plan tier.
+  unit: months
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: api_credits
+  description: Image/video API credits consumed; one image, video, collection image, animated GIF, or screenshot generally consumes one credit.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - project
+  - resource_type
+- name: pdf_render_credits
+  description: Additional credits consumed when render_pdf is enabled (3x the standard credit cost).
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - project
+- name: bandwidth
+  description: Bandwidth served from generated media against the plan's monthly allowance.
+  unit: gigabytes
+  aggregation: sum
+  dimensions:
+  - account
+  - project
+principles:
+- name: Visibility
+  description: Pull account quota and usage from GET /v2/account; track credits and bandwidth consumed per project against the plan allowance.
+- name: Allocation
+  description: Scope API keys per project/workload and tag rendered resources with metadata to map credits back to teams or campaigns.
+- name: Optimization
+  description: Right-size the plan tier to actual credit demand; avoid unnecessary PDF renders (3x cost); cache and reuse generated assets; batch via collections instead of many single-image calls.
+- name: Accountability
+  description: Assign owners per project; review monthly credit and bandwidth burn before the hard cap forces an unplanned upgrade.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

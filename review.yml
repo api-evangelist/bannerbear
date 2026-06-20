@@ -1,0 +1,101 @@
+aid: bannerbear
+name: Bannerbear
+review:
+  question: Does Bannerbear expose a documented public WebSocket or event-driven streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Bannerbear is asynchronous by design but not event-streaming. Create
+    operations return 202 Accepted and the result is delivered either by
+    polling the resource GET endpoint (pending -> completed/failed) or by an
+    HTTP webhook callback (Bannerbear POSTs the completed resource object to a
+    caller-supplied webhook_url). There is no WebSocket (ws/wss) surface and no
+    Server-Sent Events stream. Per API Evangelist AsyncAPI scope, webhook
+    callbacks alone are request/response HTTP and are modeled in the OpenAPI
+    document (202 responses + webhook_url parameters), so no AsyncAPI document
+    was authored.
+findings:
+  summary: |
+    Bannerbear does not publish a WebSocket or SSE API. The platform is a REST
+    API under https://api.bannerbear.com/v2 secured with a Bearer project (or
+    master) API key. Long-running create operations (images, videos,
+    collections, screenshots, animated GIFs, movies, PDFs, diagnoses) return
+    202 Accepted and complete asynchronously. Results are obtained by polling
+    the corresponding GET /:resource/:uid endpoint until status becomes
+    completed or failed, or by registering a webhook_url that Bannerbear POSTs
+    the finished resource object to. A synchronous host
+    (https://sync.api.bannerbear.com/v2) returns the completed object inline
+    for images, collections, and screenshots, with a 10-second timeout (408 on
+    overrun). The documented global rate limit is 30 requests per 10 seconds.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.bannerbear.com/v2
+      documented: true
+    - protocol: REST (synchronous)
+      scheme: https
+      baseURL: https://sync.api.bannerbear.com/v2
+      note: Returns completed image/collection/screenshot inline within a 10-second timeout (408 on overrun).
+      documented: true
+    - protocol: Webhook
+      scheme: https
+      note: Outbound HTTP callback; Bannerbear POSTs the completed resource object to a caller-supplied webhook_url. Not WebSocket.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the Bannerbear API reference as of the review date.
+  asyncPattern:
+    create: Returns 202 Accepted; resource starts in status pending.
+    poll: GET /v2/:resource/:uid until status is completed or failed.
+    webhook: Optional webhook_url receives a POST of the completed resource object, including webhook_response_code.
+  endpointsConfirmedRest:
+    - GET    https://api.bannerbear.com/v2/auth
+    - GET    https://api.bannerbear.com/v2/account
+    - POST   https://api.bannerbear.com/v2/images
+    - GET    https://api.bannerbear.com/v2/images
+    - GET    https://api.bannerbear.com/v2/images/{uid}
+    - POST   https://api.bannerbear.com/v2/videos
+    - GET    https://api.bannerbear.com/v2/videos
+    - GET    https://api.bannerbear.com/v2/videos/{uid}
+    - PATCH  https://api.bannerbear.com/v2/videos
+    - POST   https://api.bannerbear.com/v2/collections
+    - GET    https://api.bannerbear.com/v2/collections
+    - GET    https://api.bannerbear.com/v2/collections/{uid}
+    - POST   https://api.bannerbear.com/v2/screenshots
+    - GET    https://api.bannerbear.com/v2/screenshots
+    - GET    https://api.bannerbear.com/v2/screenshots/{uid}
+    - POST   https://api.bannerbear.com/v2/animated_gifs
+    - GET    https://api.bannerbear.com/v2/animated_gifs
+    - GET    https://api.bannerbear.com/v2/animated_gifs/{uid}
+    - POST   https://api.bannerbear.com/v2/templates
+    - GET    https://api.bannerbear.com/v2/templates
+    - GET    https://api.bannerbear.com/v2/templates/{uid}
+    - PATCH  https://api.bannerbear.com/v2/templates/{uid}
+    - DELETE https://api.bannerbear.com/v2/templates/{uid}
+    - POST   https://api.bannerbear.com/v2/template_sets
+    - GET    https://api.bannerbear.com/v2/template_sets
+    - GET    https://api.bannerbear.com/v2/template_sets/{uid}
+    - PATCH  https://api.bannerbear.com/v2/template_sets/{uid}
+    - GET    https://api.bannerbear.com/v2/fonts
+    - GET    https://api.bannerbear.com/v2/effects
+sources:
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+    note: All documented endpoints are HTTPS REST; rate limit is 30 requests per 10 seconds; auth is Bearer API key.
+  - url: https://www.bannerbear.com/help/api/
+    type: Documentation
+    note: Describes the async 202 + poll/webhook pattern and the synchronous host alternative.
+  - url: https://www.bannerbear.com/pricing/
+    type: Documentation
+    note: Plan tiers bundle fixed monthly API credit pools; credit limits are hard caps.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE streaming surface exists. The asynchronous render
+    behavior is request/response HTTP (202 + polling) plus outbound webhook
+    callbacks, both of which are represented in the OpenAPI document, so no
+    AsyncAPI artifact was created.

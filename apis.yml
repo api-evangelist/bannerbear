@@ -1,0 +1,182 @@
+aid: bannerbear
+url: https://raw.githubusercontent.com/api-evangelist/bannerbear/refs/heads/main/apis.yml
+name: Bannerbear
+kind: company
+description: Bannerbear is an API-first platform for auto-generating images and videos
+  from reusable templates. A single REST API call applies text, image, and color
+  modifications to a template and renders branded marketing visuals, social media
+  graphics, animated GIFs, screenshots, and videos at scale, with asynchronous
+  webhook and polling delivery.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Image Generation
+- Video Generation
+- Templates
+- Media
+- Automation
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: bannerbear:bannerbear-images-api
+  name: Bannerbear Images API
+  tags:
+  - Images
+  - Image Generation
+  - Templates
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://www.bannerbear.com/product/image-generation-api/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: Auto-generate images from a template by POSTing a modifications array
+    of text, image, and color layer changes. Supports transparent PNG output, PDF
+    rendering, asynchronous webhook callbacks, polling, and a synchronous endpoint.
+- aid: bannerbear:bannerbear-videos-api
+  name: Bannerbear Videos API
+  tags:
+  - Videos
+  - Video Generation
+  - Build Packs
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://www.bannerbear.com/product/video-generation-api/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: Render videos from a video template using Overlay, Transcribe, and
+    Multi Overlay build packs, with input media, zoom, blur, trimming, frames, and
+    optional GIF preview generation.
+- aid: bannerbear:bannerbear-collections-api
+  name: Bannerbear Collections API
+  tags:
+  - Collections
+  - Template Sets
+  - Batch
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: Generate multiple images at once from a template set by applying one
+    set of modifications across every template in the set, with webhook and
+    synchronous delivery options.
+- aid: bannerbear:bannerbear-screenshots-api
+  name: Bannerbear Screenshots API
+  tags:
+  - Screenshots
+  - Web Capture
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://www.bannerbear.com/product/url-to-screenshot-api/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: Capture screenshots of any web page by URL, with configurable browser
+    width, full-page or fixed height, mobile user agent, and language, delivered
+    asynchronously or synchronously.
+- aid: bannerbear:bannerbear-animated-gifs-api
+  name: Bannerbear Animated GIFs API
+  tags:
+  - Animated GIFs
+  - Animation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://developers.bannerbear.com/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: Build animated GIFs from a template by supplying an array of frames
+    (up to 30), each its own modifications array, with configurable frame rate,
+    per-frame durations, and looping.
+- aid: bannerbear:bannerbear-templates-api
+  name: Bannerbear Templates and Template Sets API
+  tags:
+  - Templates
+  - Template Sets
+  - Management
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://developers.bannerbear.com/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: Create, duplicate, import, retrieve, update, list, and delete
+    templates, and group templates into template sets for collection generation,
+    with tag, name, and extended-layer filtering.
+- aid: bannerbear:bannerbear-fonts-api
+  name: Bannerbear Fonts and Effects API
+  tags:
+  - Fonts
+  - Effects
+  - Reference
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  properties:
+  - url: https://developers.bannerbear.com/
+    type: Documentation
+  - url: https://developers.bannerbear.com/
+    type: APIReference
+  - url: openapi/bannerbear-openapi.yml
+    type: OpenAPI
+  - url: collections/bannerbear.postman_collection.json
+    type: PostmanCollection
+  description: List the fonts and image effects available to a project so they can
+    be referenced by name inside template modifications and editor sessions.
+common:
+- type: GitHubOrganization
+  url: https://github.com/yongfook
+- type: LinkedIn
+  url: https://www.linkedin.com/company/bannerbear
+- type: Website
+  url: https://www.bannerbear.com
+- type: Documentation
+  url: https://developers.bannerbear.com/
+- type: Plans
+  url: plans/bannerbear-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/bannerbear-rate-limits.yml
+- type: FinOps
+  url: finops/bannerbear-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
