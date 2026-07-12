@@ -163,6 +163,12 @@ apis:
   description: List the fonts and image effects available to a project so they can
     be referenced by name inside template modifications and editor sessions.
 common:
+- type: DomainSecurity
+  url: security/bannerbear-domain-security.yml
+- type: Authentication
+  url: authentication/bannerbear-authentication.yml
+- url: https://www.bannerbear.com/blog/feed.xml
+  type: Blog
 - type: GitHubOrganization
   url: https://github.com/yongfook
 - type: LinkedIn
