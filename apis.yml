@@ -163,6 +163,8 @@ apis:
   description: List the fonts and image effects available to a project so they can
     be referenced by name inside template modifications and editor sessions.
 common:
+- type: AgenticAccess
+  url: agentic-access/bannerbear-agentic-access.yml
 - type: DomainSecurity
   url: security/bannerbear-domain-security.yml
 - type: Authentication
