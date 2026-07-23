@@ -1,0 +1,295 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear Animated GIFs Templates API
+  description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+- url: https://api.bannerbear.com/v2
+  description: Asynchronous API host
+- url: https://sync.api.bannerbear.com/v2
+  description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+- bearerAuth: []
+tags:
+- name: Templates
+  description: Manage templates and template sets.
+paths:
+  /templates:
+    post:
+      operationId: createTemplate
+      tags:
+      - Templates
+      summary: Create or duplicate a template
+      parameters:
+      - name: source
+        in: query
+        description: UID of an existing template to duplicate.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The created Template object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    get:
+      operationId: listTemplates
+      tags:
+      - Templates
+      summary: List templates
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - name: tag
+        in: query
+        schema:
+          type: string
+      - name: name
+        in: query
+        schema:
+          type: string
+      - name: extended
+        in: query
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          maximum: 100
+      responses:
+        '200':
+          description: A page of Template objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+  /templates/{uid}:
+    get:
+      operationId: getTemplate
+      tags:
+      - Templates
+      summary: Retrieve a template
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A Template object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    patch:
+      operationId: updateTemplate
+      tags:
+      - Templates
+      summary: Update a template
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                metadata:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                width:
+                  type: integer
+                height:
+                  type: integer
+      responses:
+        '200':
+          description: Updated Template object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    delete:
+      operationId: deleteTemplate
+      tags:
+      - Templates
+      summary: Delete a template
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: Template deleted.
+  /template_sets:
+    post:
+      operationId: createTemplateSet
+      tags:
+      - Templates
+      summary: Create a template set
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                templates:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: The created TemplateSet object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSet'
+    get:
+      operationId: listTemplateSets
+      tags:
+      - Templates
+      summary: List template sets
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of TemplateSet objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateSet'
+  /template_sets/{uid}:
+    get:
+      operationId: getTemplateSet
+      tags:
+      - Templates
+      summary: Retrieve a template set
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A TemplateSet object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSet'
+    patch:
+      operationId: updateTemplateSet
+      tags:
+      - Templates
+      summary: Update a template set
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templates:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Updated TemplateSet object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSet'
+components:
+  schemas:
+    Template:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        preview_url:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        available_modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        metadata:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
+    TemplateSet:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        available_modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.

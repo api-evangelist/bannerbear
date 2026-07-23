@@ -1,0 +1,201 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear Animated GIFs Videos API
+  description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+- url: https://api.bannerbear.com/v2
+  description: Asynchronous API host
+- url: https://sync.api.bannerbear.com/v2
+  description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+- bearerAuth: []
+tags:
+- name: Videos
+  description: Render videos from video templates.
+paths:
+  /videos:
+    post:
+      operationId: createVideo
+      tags:
+      - Videos
+      summary: Create a video
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVideoRequest'
+      responses:
+        '202':
+          description: Accepted; video is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+    get:
+      operationId: listVideos
+      tags:
+      - Videos
+      summary: List videos
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of Video objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
+    patch:
+      operationId: updateVideo
+      tags:
+      - Videos
+      summary: Update a video's transcription or approval status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                transcription:
+                  type: array
+                  items:
+                    type: string
+                approved:
+                  type: boolean
+      responses:
+        '200':
+          description: Updated Video object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+  /videos/{uid}:
+    get:
+      operationId: getVideo
+      tags:
+      - Videos
+      summary: Retrieve a video
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A Video object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+components:
+  schemas:
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
+    CreateVideoRequest:
+      type: object
+      required:
+      - video_template
+      properties:
+        video_template:
+          type: string
+        input_media_url:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        zoom:
+          type: boolean
+        zoom_factor:
+          type: number
+        blur:
+          type: integer
+          minimum: 1
+          maximum: 10
+        trim_start_time:
+          type: string
+          description: HH:MM:SS
+        trim_end_time:
+          type: string
+          description: HH:MM:SS
+        frames:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        create_gif_preview:
+          type: boolean
+    Video:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
+          type: string
+        video_url:
+          type: string
+        video_template:
+          type: string
+        input_media_url:
+          type: string
+        approval_required:
+          type: boolean
+        approved:
+          type: boolean
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.

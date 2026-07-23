@@ -1,0 +1,61 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear Animated GIFs Auth API
+  description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+- url: https://api.bannerbear.com/v2
+  description: Asynchronous API host
+- url: https://sync.api.bannerbear.com/v2
+  description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+- bearerAuth: []
+tags:
+- name: Auth
+  description: API key verification and account status.
+paths:
+  /auth:
+    get:
+      operationId: verifyAuth
+      tags:
+      - Auth
+      summary: Verify the API key
+      responses:
+        '200':
+          description: API key is valid.
+  /account:
+    get:
+      operationId: getAccount
+      tags:
+      - Auth
+      summary: Retrieve account status, quota, and usage
+      responses:
+        '200':
+          description: Account object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        paid_plan_name:
+          type: string
+        image_api_quota:
+          type: integer
+        image_api_usage_this_month:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.

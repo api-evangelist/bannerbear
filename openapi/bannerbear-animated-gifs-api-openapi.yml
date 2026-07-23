@@ -1,0 +1,169 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear Animated GIFs API
+  description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+- url: https://api.bannerbear.com/v2
+  description: Asynchronous API host
+- url: https://sync.api.bannerbear.com/v2
+  description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+- bearerAuth: []
+tags:
+- name: Animated GIFs
+  description: Build animated GIFs from template frames.
+paths:
+  /animated_gifs:
+    post:
+      operationId: createAnimatedGif
+      tags:
+      - Animated GIFs
+      summary: Create an animated GIF
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimatedGifRequest'
+      responses:
+        '202':
+          description: Accepted; animated GIF is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimatedGif'
+    get:
+      operationId: listAnimatedGifs
+      tags:
+      - Animated GIFs
+      summary: List animated GIFs
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of AnimatedGif objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimatedGif'
+  /animated_gifs/{uid}:
+    get:
+      operationId: getAnimatedGif
+      tags:
+      - Animated GIFs
+      summary: Retrieve an animated GIF
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: An AnimatedGif object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimatedGif'
+components:
+  schemas:
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
+    AnimatedGif:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
+          type: string
+        image_url:
+          type: string
+        template:
+          type: string
+        frames:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        fps:
+          type: number
+        loop:
+          type: boolean
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateAnimatedGifRequest:
+      type: object
+      required:
+      - template
+      - frames
+      properties:
+        template:
+          type: string
+        frames:
+          type: array
+          maxItems: 30
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        fps:
+          type: number
+          default: 1
+        frame_durations:
+          type: array
+          items:
+            type: number
+        loop:
+          type: boolean
+        input_media_url:
+          type: string
+        webhook_url:
+          type: string
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.

@@ -1,0 +1,56 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear Animated GIFs Fonts API
+  description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+- url: https://api.bannerbear.com/v2
+  description: Asynchronous API host
+- url: https://sync.api.bannerbear.com/v2
+  description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+- bearerAuth: []
+tags:
+- name: Fonts
+  description: Reference fonts and effects.
+paths:
+  /fonts:
+    get:
+      operationId: listFonts
+      tags:
+      - Fonts
+      summary: List available fonts
+      responses:
+        '200':
+          description: An array of font names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /effects:
+    get:
+      operationId: listEffects
+      tags:
+      - Fonts
+      summary: List available image effects
+      responses:
+        '200':
+          description: An array of effect names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.

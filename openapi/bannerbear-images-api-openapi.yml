@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear Animated GIFs Images API
+  description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+- url: https://api.bannerbear.com/v2
+  description: Asynchronous API host
+- url: https://sync.api.bannerbear.com/v2
+  description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+- bearerAuth: []
+tags:
+- name: Images
+  description: Auto-generate images from templates.
+paths:
+  /images:
+    post:
+      operationId: createImage
+      tags:
+      - Images
+      summary: Create an image
+      description: Creates an image by applying modifications to a template. Returns 202 Accepted on the async host; the image renders in the background and is delivered by webhook or retrieved by polling. On the sync host the completed Image object is returned with a 200.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateImageRequest'
+      responses:
+        '202':
+          description: Accepted; image is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+        '200':
+          description: Completed image (synchronous host).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+    get:
+      operationId: listImages
+      tags:
+      - Images
+      summary: List images
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of Image objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+  /images/{uid}:
+    get:
+      operationId: getImage
+      tags:
+      - Images
+      summary: Retrieve an image
+      parameters:
+      - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: An Image object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+components:
+  schemas:
+    CreateImageRequest:
+      type: object
+      required:
+      - template
+      - modifications
+      properties:
+        template:
+          type: string
+          description: UID of the template to render.
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+          description: URL Bannerbear POSTs the completed Image object to.
+        transparent:
+          type: boolean
+          description: Render a transparent PNG background.
+        render_pdf:
+          type: boolean
+          description: Also render a PDF (consumes 3x quota).
+        metadata:
+          type: string
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
+    Image:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
+          type: string
+        image_url:
+          type: string
+        image_url_png:
+          type: string
+        image_url_jpg:
+          type: string
+        template:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        webhook_response_code:
+          type: integer
+        metadata:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.
