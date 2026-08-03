@@ -1,0 +1,28 @@
+{
+  "provider": "bannerbear",
+  "sources": [
+    "bannerbear-animated-gifs-api-openapi.yml",
+    "bannerbear-auth-api-openapi.yml",
+    "bannerbear-collections-api-openapi.yml",
+    "bannerbear-fonts-api-openapi.yml",
+    "bannerbear-images-api-openapi.yml",
+    "bannerbear-screenshots-api-openapi.yml",
+    "bannerbear-templates-api-openapi.yml",
+    "bannerbear-videos-api-openapi.yml"
+  ],
+  "outputs": [
+    "bannerbear-animated-gifs-api-openapi.yml",
+    "bannerbear-auth-api-openapi.yml",
+    "bannerbear-collections-api-openapi.yml",
+    "bannerbear-fonts-api-openapi.yml",
+    "bannerbear-images-api-openapi.yml",
+    "bannerbear-screenshots-api-openapi.yml",
+    "bannerbear-templates-api-openapi.yml",
+    "bannerbear-videos-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,0 +1,954 @@
+openapi: 3.0.1
+info:
+  title: Bannerbear API
+  description: >-
+    The Bannerbear API auto-generates images and videos from reusable templates.
+    A request applies an array of modifications (text, image, and color layer
+    changes) to a template and renders the output. Most create operations are
+    asynchronous, returning 202 Accepted; results are delivered via webhook
+    callback or retrieved by polling the resource endpoint. Synchronous variants
+    are available on the sync host for images, collections, and screenshots.
+  termsOfService: https://www.bannerbear.com/terms/
+  contact:
+    name: Bannerbear Support
+    url: https://www.bannerbear.com/help/
+  version: '2.0'
+servers:
+  - url: https://api.bannerbear.com/v2
+    description: Asynchronous API host
+  - url: https://sync.api.bannerbear.com/v2
+    description: Synchronous API host (10-second timeout, 408 on timeout)
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+    description: API key verification and account status.
+  - name: Images
+    description: Auto-generate images from templates.
+  - name: Videos
+    description: Render videos from video templates.
+  - name: Collections
+    description: Generate multiple images from a template set.
+  - name: Screenshots
+    description: Capture web page screenshots by URL.
+  - name: Animated GIFs
+    description: Build animated GIFs from template frames.
+  - name: Templates
+    description: Manage templates and template sets.
+  - name: Fonts
+    description: Reference fonts and effects.
+paths:
+  /auth:
+    get:
+      operationId: verifyAuth
+      tags:
+        - Auth
+      summary: Verify the API key
+      responses:
+        '200':
+          description: API key is valid.
+  /account:
+    get:
+      operationId: getAccount
+      tags:
+        - Auth
+      summary: Retrieve account status, quota, and usage
+      responses:
+        '200':
+          description: Account object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /images:
+    post:
+      operationId: createImage
+      tags:
+        - Images
+      summary: Create an image
+      description: >-
+        Creates an image by applying modifications to a template. Returns 202
+        Accepted on the async host; the image renders in the background and is
+        delivered by webhook or retrieved by polling. On the sync host the
+        completed Image object is returned with a 200.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateImageRequest'
+      responses:
+        '202':
+          description: Accepted; image is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+        '200':
+          description: Completed image (synchronous host).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+    get:
+      operationId: listImages
+      tags:
+        - Images
+      summary: List images
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of Image objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+  /images/{uid}:
+    get:
+      operationId: getImage
+      tags:
+        - Images
+      summary: Retrieve an image
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: An Image object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+  /videos:
+    post:
+      operationId: createVideo
+      tags:
+        - Videos
+      summary: Create a video
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVideoRequest'
+      responses:
+        '202':
+          description: Accepted; video is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+    get:
+      operationId: listVideos
+      tags:
+        - Videos
+      summary: List videos
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of Video objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
+    patch:
+      operationId: updateVideo
+      tags:
+        - Videos
+      summary: Update a video's transcription or approval status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                transcription:
+                  type: array
+                  items:
+                    type: string
+                approved:
+                  type: boolean
+      responses:
+        '200':
+          description: Updated Video object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+  /videos/{uid}:
+    get:
+      operationId: getVideo
+      tags:
+        - Videos
+      summary: Retrieve a video
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A Video object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+  /collections:
+    post:
+      operationId: createCollection
+      tags:
+        - Collections
+      summary: Create a collection
+      description: >-
+        Generates multiple images from a template set by applying a single set
+        of modifications across every template in the set.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionRequest'
+      responses:
+        '202':
+          description: Accepted; collection is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+        '200':
+          description: Completed collection (synchronous host).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+    get:
+      operationId: listCollections
+      tags:
+        - Collections
+      summary: List collections
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of Collection objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+  /collections/{uid}:
+    get:
+      operationId: getCollection
+      tags:
+        - Collections
+      summary: Retrieve a collection
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A Collection object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+  /screenshots:
+    post:
+      operationId: createScreenshot
+      tags:
+        - Screenshots
+      summary: Create a screenshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScreenshotRequest'
+      responses:
+        '202':
+          description: Accepted; screenshot is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screenshot'
+        '200':
+          description: Completed screenshot (synchronous host).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screenshot'
+    get:
+      operationId: listScreenshots
+      tags:
+        - Screenshots
+      summary: List screenshots
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of Screenshot objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Screenshot'
+  /screenshots/{uid}:
+    get:
+      operationId: getScreenshot
+      tags:
+        - Screenshots
+      summary: Retrieve a screenshot
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A Screenshot object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screenshot'
+  /animated_gifs:
+    post:
+      operationId: createAnimatedGif
+      tags:
+        - Animated GIFs
+      summary: Create an animated GIF
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimatedGifRequest'
+      responses:
+        '202':
+          description: Accepted; animated GIF is rendering.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimatedGif'
+    get:
+      operationId: listAnimatedGifs
+      tags:
+        - Animated GIFs
+      summary: List animated GIFs
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of AnimatedGif objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimatedGif'
+  /animated_gifs/{uid}:
+    get:
+      operationId: getAnimatedGif
+      tags:
+        - Animated GIFs
+      summary: Retrieve an animated GIF
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: An AnimatedGif object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimatedGif'
+  /templates:
+    post:
+      operationId: createTemplate
+      tags:
+        - Templates
+      summary: Create or duplicate a template
+      parameters:
+        - name: source
+          in: query
+          description: UID of an existing template to duplicate.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The created Template object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    get:
+      operationId: listTemplates
+      tags:
+        - Templates
+      summary: List templates
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - name: tag
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: extended
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            maximum: 100
+      responses:
+        '200':
+          description: A page of Template objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+  /templates/{uid}:
+    get:
+      operationId: getTemplate
+      tags:
+        - Templates
+      summary: Retrieve a template
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A Template object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    patch:
+      operationId: updateTemplate
+      tags:
+        - Templates
+      summary: Update a template
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                metadata:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                width:
+                  type: integer
+                height:
+                  type: integer
+      responses:
+        '200':
+          description: Updated Template object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+    delete:
+      operationId: deleteTemplate
+      tags:
+        - Templates
+      summary: Delete a template
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: Template deleted.
+  /template_sets:
+    post:
+      operationId: createTemplateSet
+      tags:
+        - Templates
+      summary: Create a template set
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                templates:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: The created TemplateSet object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSet'
+    get:
+      operationId: listTemplateSets
+      tags:
+        - Templates
+      summary: List template sets
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A page of TemplateSet objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateSet'
+  /template_sets/{uid}:
+    get:
+      operationId: getTemplateSet
+      tags:
+        - Templates
+      summary: Retrieve a template set
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      responses:
+        '200':
+          description: A TemplateSet object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSet'
+    patch:
+      operationId: updateTemplateSet
+      tags:
+        - Templates
+      summary: Update a template set
+      parameters:
+        - $ref: '#/components/parameters/Uid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templates:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Updated TemplateSet object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSet'
+  /fonts:
+    get:
+      operationId: listFonts
+      tags:
+        - Fonts
+      summary: List available fonts
+      responses:
+        '200':
+          description: An array of font names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /effects:
+    get:
+      operationId: listEffects
+      tags:
+        - Fonts
+      summary: List available image effects
+      responses:
+        '200':
+          description: An array of effect names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Project or master API key passed as a Bearer token.
+  parameters:
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
+  schemas:
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
+    Account:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        paid_plan_name:
+          type: string
+        image_api_quota:
+          type: integer
+        image_api_usage_this_month:
+          type: integer
+    CreateImageRequest:
+      type: object
+      required:
+        - template
+        - modifications
+      properties:
+        template:
+          type: string
+          description: UID of the template to render.
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+          description: URL Bannerbear POSTs the completed Image object to.
+        transparent:
+          type: boolean
+          description: Render a transparent PNG background.
+        render_pdf:
+          type: boolean
+          description: Also render a PDF (consumes 3x quota).
+        metadata:
+          type: string
+    Image:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+        self:
+          type: string
+        image_url:
+          type: string
+        image_url_png:
+          type: string
+        image_url_jpg:
+          type: string
+        template:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        webhook_response_code:
+          type: integer
+        metadata:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateVideoRequest:
+      type: object
+      required:
+        - video_template
+      properties:
+        video_template:
+          type: string
+        input_media_url:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        zoom:
+          type: boolean
+        zoom_factor:
+          type: number
+        blur:
+          type: integer
+          minimum: 1
+          maximum: 10
+        trim_start_time:
+          type: string
+          description: HH:MM:SS
+        trim_end_time:
+          type: string
+          description: HH:MM:SS
+        frames:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        create_gif_preview:
+          type: boolean
+    Video:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+        self:
+          type: string
+        video_url:
+          type: string
+        video_template:
+          type: string
+        input_media_url:
+          type: string
+        approval_required:
+          type: boolean
+        approved:
+          type: boolean
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateCollectionRequest:
+      type: object
+      required:
+        - template_set
+        - modifications
+      properties:
+        template_set:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        transparent:
+          type: boolean
+        metadata:
+          type: string
+    Collection:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+        self:
+          type: string
+        template_set:
+          type: string
+        image_urls:
+          type: object
+          additionalProperties:
+            type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateScreenshotRequest:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: The web page URL to capture.
+        webhook_url:
+          type: string
+        width:
+          type: integer
+          default: 1200
+        height:
+          type: integer
+          description: Omit for a full-page screenshot.
+        mobile:
+          type: boolean
+        language:
+          type: string
+          description: ISO 639-1 two-letter language code.
+    Screenshot:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+        self:
+          type: string
+        url:
+          type: string
+        screenshot_image_url:
+          type: string
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateAnimatedGifRequest:
+      type: object
+      required:
+        - template
+        - frames
+      properties:
+        template:
+          type: string
+        frames:
+          type: array
+          maxItems: 30
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        fps:
+          type: number
+          default: 1
+        frame_durations:
+          type: array
+          items:
+            type: number
+        loop:
+          type: boolean
+        input_media_url:
+          type: string
+        webhook_url:
+          type: string
+    AnimatedGif:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - completed
+            - failed
+        self:
+          type: string
+        image_url:
+          type: string
+        template:
+          type: string
+        frames:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        fps:
+          type: number
+        loop:
+          type: boolean
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Template:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        preview_url:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        available_modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        metadata:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    TemplateSet:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        available_modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        created_at:
+          type: string
+          format: date-time
