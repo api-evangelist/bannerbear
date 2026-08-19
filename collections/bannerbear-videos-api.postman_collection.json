@@ -1,0 +1,413 @@
+{
+  "item": [
+    {
+      "id": "16b6e68d-36aa-4582-a853-69366c3462ca",
+      "name": "Videos",
+      "description": {
+        "content": "Render videos from video templates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4570fff8-5cc6-423e-acb9-4e3aead675c0",
+          "name": "Create a video",
+          "request": {
+            "name": "Create a video",
+            "description": {},
+            "url": {
+              "path": [
+                "videos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video_template\": \"<string>\",\n  \"input_media_url\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"zoom\": \"<boolean>\",\n  \"zoom_factor\": \"<number>\",\n  \"blur\": \"<integer>\",\n  \"trim_start_time\": \"<string>\",\n  \"trim_end_time\": \"<string>\",\n  \"frames\": [\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ]\n  ],\n  \"create_gif_preview\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0e19c815-6cf3-4a55-a8e6-9cd2d81e19cc",
+              "name": "Accepted; video is rendering.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "videos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video_template\": \"<string>\",\n  \"input_media_url\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"zoom\": \"<boolean>\",\n  \"zoom_factor\": \"<number>\",\n  \"blur\": \"<integer>\",\n  \"trim_start_time\": \"<string>\",\n  \"trim_end_time\": \"<string>\",\n  \"frames\": [\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ]\n  ],\n  \"create_gif_preview\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"video_url\": \"string\",\n  \"video_template\": \"string\",\n  \"input_media_url\": \"string\",\n  \"approval_required\": true,\n  \"approved\": true,\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1952-02-17T16:11:02.143Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1dd71a7c-fd33-47c8-821f-60c06d721bfa",
+          "name": "List videos",
+          "request": {
+            "name": "List videos",
+            "description": {},
+            "url": {
+              "path": [
+                "videos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "87c0ecb0-7b47-4107-9f68-d0b9cd4f7c5e",
+              "name": "A page of Video objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "videos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"status\": \"completed\",\n    \"self\": \"string\",\n    \"video_url\": \"string\",\n    \"video_template\": \"string\",\n    \"input_media_url\": \"string\",\n    \"approval_required\": true,\n    \"approved\": false,\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1996-03-12T11:12:40.288Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"status\": \"completed\",\n    \"self\": \"string\",\n    \"video_url\": \"string\",\n    \"video_template\": \"string\",\n    \"input_media_url\": \"string\",\n    \"approval_required\": false,\n    \"approved\": true,\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1986-08-03T02:54:35.002Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "86c7a4d2-e27f-4741-bd9b-cef7ba5dfad7",
+          "name": "Update a video's transcription or approval status",
+          "request": {
+            "name": "Update a video's transcription or approval status",
+            "description": {},
+            "url": {
+              "path": [
+                "videos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"<string>\",\n  \"transcription\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"approved\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da4818c9-8b82-4f37-bd9b-b92d1dbe8e8f",
+              "name": "Updated Video object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "videos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"uid\": \"<string>\",\n  \"transcription\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"approved\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"video_url\": \"string\",\n  \"video_template\": \"string\",\n  \"input_media_url\": \"string\",\n  \"approval_required\": true,\n  \"approved\": true,\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1952-02-17T16:11:02.143Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f7b177cd-2093-4937-9cae-6c9a70108951",
+          "name": "Retrieve a video",
+          "request": {
+            "name": "Retrieve a video",
+            "description": {},
+            "url": {
+              "path": [
+                "videos",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0b6226a7-fbbd-4d81-99af-3b50a38fb417",
+              "name": "A Video object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "videos",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"video_url\": \"string\",\n  \"video_template\": \"string\",\n  \"input_media_url\": \"string\",\n  \"approval_required\": true,\n  \"approved\": true,\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1952-02-17T16:11:02.143Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ed6eb131-f0e9-4cbe-af35-7aefa0f5bffb",
+    "name": "Bannerbear Animated GIFs Videos API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.\n\nContact Support:\n Name: Bannerbear Support",
+      "type": "text/plain"
+    }
+  }
+}

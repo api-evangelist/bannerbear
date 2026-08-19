@@ -1,0 +1,371 @@
+{
+  "item": [
+    {
+      "id": "1d52fb0f-fb14-43e6-899a-9e5661a60b2d",
+      "name": "Collections",
+      "description": {
+        "content": "Generate multiple images from a template set.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "585c6458-49b6-4dd5-827d-e5f040a57fee",
+          "name": "Create a collection",
+          "request": {
+            "name": "Create a collection",
+            "description": {
+              "content": "Generates multiple images from a template set by applying a single set of modifications across every template in the set.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template_set\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"transparent\": \"<boolean>\",\n  \"metadata\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6d19ad85-d910-4a9b-840f-f6626e6b0779",
+              "name": "Completed collection (synchronous host).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"template_set\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"transparent\": \"<boolean>\",\n  \"metadata\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"completed\",\n  \"self\": \"string\",\n  \"template_set\": \"string\",\n  \"image_urls\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  },\n  \"images\": [\n    {\n      \"uid\": \"string\",\n      \"status\": \"pending\",\n      \"self\": \"string\",\n      \"image_url\": \"string\",\n      \"image_url_png\": \"string\",\n      \"image_url_jpg\": \"string\",\n      \"template\": \"string\",\n      \"modifications\": [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      \"webhook_url\": \"string\",\n      \"webhook_response_code\": 795,\n      \"metadata\": \"string\",\n      \"created_at\": \"1977-10-13T03:18:16.446Z\"\n    },\n    {\n      \"uid\": \"string\",\n      \"status\": \"completed\",\n      \"self\": \"string\",\n      \"image_url\": \"string\",\n      \"image_url_png\": \"string\",\n      \"image_url_jpg\": \"string\",\n      \"template\": \"string\",\n      \"modifications\": [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      \"webhook_url\": \"string\",\n      \"webhook_response_code\": 7081,\n      \"metadata\": \"string\",\n      \"created_at\": \"1964-03-26T17:22:41.976Z\"\n    }\n  ],\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1985-11-13T18:41:30.507Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "678f9990-9427-4363-b56c-ba89ed902c89",
+              "name": "Accepted; collection is rendering.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"template_set\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"transparent\": \"<boolean>\",\n  \"metadata\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"template_set\": \"string\",\n  \"image_urls\": {\n    \"key_0\": \"string\"\n  },\n  \"images\": [\n    {\n      \"uid\": \"string\",\n      \"status\": \"failed\",\n      \"self\": \"string\",\n      \"image_url\": \"string\",\n      \"image_url_png\": \"string\",\n      \"image_url_jpg\": \"string\",\n      \"template\": \"string\",\n      \"modifications\": [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      \"webhook_url\": \"string\",\n      \"webhook_response_code\": 550,\n      \"metadata\": \"string\",\n      \"created_at\": \"1973-07-03T15:19:23.818Z\"\n    },\n    {\n      \"uid\": \"string\",\n      \"status\": \"completed\",\n      \"self\": \"string\",\n      \"image_url\": \"string\",\n      \"image_url_png\": \"string\",\n      \"image_url_jpg\": \"string\",\n      \"template\": \"string\",\n      \"modifications\": [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      \"webhook_url\": \"string\",\n      \"webhook_response_code\": 2106,\n      \"metadata\": \"string\",\n      \"created_at\": \"1975-04-06T14:15:23.134Z\"\n    }\n  ],\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1980-05-18T20:29:26.638Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9bd11782-60d7-4123-b341-c8a1f2e0e631",
+          "name": "List collections",
+          "request": {
+            "name": "List collections",
+            "description": {},
+            "url": {
+              "path": [
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7361b053-a18d-4269-a1ae-059a60c0a8e5",
+              "name": "A page of Collection objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"status\": \"failed\",\n    \"self\": \"string\",\n    \"template_set\": \"string\",\n    \"image_urls\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"images\": [\n      {\n        \"uid\": \"string\",\n        \"status\": \"pending\",\n        \"self\": \"string\",\n        \"image_url\": \"string\",\n        \"image_url_png\": \"string\",\n        \"image_url_jpg\": \"string\",\n        \"template\": \"string\",\n        \"modifications\": [\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          }\n        ],\n        \"webhook_url\": \"string\",\n        \"webhook_response_code\": 872,\n        \"metadata\": \"string\",\n        \"created_at\": \"1966-06-16T01:28:02.822Z\"\n      },\n      {\n        \"uid\": \"string\",\n        \"status\": \"pending\",\n        \"self\": \"string\",\n        \"image_url\": \"string\",\n        \"image_url_png\": \"string\",\n        \"image_url_jpg\": \"string\",\n        \"template\": \"string\",\n        \"modifications\": [\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          }\n        ],\n        \"webhook_url\": \"string\",\n        \"webhook_response_code\": 4388,\n        \"metadata\": \"string\",\n        \"created_at\": \"1955-06-02T18:00:48.260Z\"\n      }\n    ],\n    \"webhook_url\": \"string\",\n    \"created_at\": \"2016-03-03T09:42:15.473Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"status\": \"completed\",\n    \"self\": \"string\",\n    \"template_set\": \"string\",\n    \"image_urls\": {\n      \"key_0\": \"string\"\n    },\n    \"images\": [\n      {\n        \"uid\": \"string\",\n        \"status\": \"completed\",\n        \"self\": \"string\",\n        \"image_url\": \"string\",\n        \"image_url_png\": \"string\",\n        \"image_url_jpg\": \"string\",\n        \"template\": \"string\",\n        \"modifications\": [\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          }\n        ],\n        \"webhook_url\": \"string\",\n        \"webhook_response_code\": 9168,\n        \"metadata\": \"string\",\n        \"created_at\": \"2003-06-16T06:14:14.386Z\"\n      },\n      {\n        \"uid\": \"string\",\n        \"status\": \"completed\",\n        \"self\": \"string\",\n        \"image_url\": \"string\",\n        \"image_url_png\": \"string\",\n        \"image_url_jpg\": \"string\",\n        \"template\": \"string\",\n        \"modifications\": [\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"text\": \"<string>\",\n            \"color\": \"<string>\",\n            \"background\": \"<string>\",\n            \"image_url\": \"<string>\",\n            \"font_family\": \"<string>\"\n          }\n        ],\n        \"webhook_url\": \"string\",\n        \"webhook_response_code\": 2705,\n        \"metadata\": \"string\",\n        \"created_at\": \"2004-07-12T00:30:53.404Z\"\n      }\n    ],\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1968-10-29T02:12:55.080Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df08aa22-95fb-4b8a-9d12-a9ad5f0c34d4",
+          "name": "Retrieve a collection",
+          "request": {
+            "name": "Retrieve a collection",
+            "description": {},
+            "url": {
+              "path": [
+                "collections",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f2d35a22-5926-4514-b40e-d30710aa6ff6",
+              "name": "A Collection object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"template_set\": \"string\",\n  \"image_urls\": {\n    \"key_0\": \"string\"\n  },\n  \"images\": [\n    {\n      \"uid\": \"string\",\n      \"status\": \"failed\",\n      \"self\": \"string\",\n      \"image_url\": \"string\",\n      \"image_url_png\": \"string\",\n      \"image_url_jpg\": \"string\",\n      \"template\": \"string\",\n      \"modifications\": [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      \"webhook_url\": \"string\",\n      \"webhook_response_code\": 550,\n      \"metadata\": \"string\",\n      \"created_at\": \"1973-07-03T15:19:23.818Z\"\n    },\n    {\n      \"uid\": \"string\",\n      \"status\": \"completed\",\n      \"self\": \"string\",\n      \"image_url\": \"string\",\n      \"image_url_png\": \"string\",\n      \"image_url_jpg\": \"string\",\n      \"template\": \"string\",\n      \"modifications\": [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      \"webhook_url\": \"string\",\n      \"webhook_response_code\": 2106,\n      \"metadata\": \"string\",\n      \"created_at\": \"1975-04-06T14:15:23.134Z\"\n    }\n  ],\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1980-05-18T20:29:26.638Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "45f1ac4c-ead4-40a3-9e38-8bf9953336ca",
+    "name": "Bannerbear Animated GIFs Collections API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.\n\nContact Support:\n Name: Bannerbear Support",
+      "type": "text/plain"
+    }
+  }
+}

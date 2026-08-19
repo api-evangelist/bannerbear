@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bannerbear Animated GIFs API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Animated GIFs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List animated GIFs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/animated_gifs",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated lists (25 per page)."
+              }
+            ]
+          },
+          "docs": "List animated GIFs"
+        },
+        {
+          "info": {
+            "name": "Create an animated GIF",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/animated_gifs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an animated GIF"
+        },
+        {
+          "info": {
+            "name": "Retrieve an animated GIF",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/animated_gifs/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieve an animated GIF"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

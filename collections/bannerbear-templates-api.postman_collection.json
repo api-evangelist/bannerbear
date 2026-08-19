@@ -1,0 +1,931 @@
+{
+  "item": [
+    {
+      "id": "3cee20db-4fab-44b2-8d90-dfb81c70e063",
+      "name": "Templates",
+      "description": {
+        "content": "Manage templates and template sets.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c9d5b952-a4d4-4f0c-98a1-886ea9705f79",
+          "name": "Create or duplicate a template",
+          "request": {
+            "name": "Create or duplicate a template",
+            "description": {},
+            "url": {
+              "path": [
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "UID of an existing template to duplicate."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dfc70665-856c-4ddb-a520-863bd17f7547",
+              "name": "The created Template object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"name\": \"string\",\n  \"width\": 5922,\n  \"height\": 7827,\n  \"preview_url\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"available_modifications\": [\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    }\n  ],\n  \"metadata\": \"string\",\n  \"created_at\": \"1957-11-14T16:29:47.663Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "046fae05-b17c-4ee7-9e4f-22eb49c867d4",
+          "name": "List templates",
+          "request": {
+            "name": "List templates",
+            "description": {},
+            "url": {
+              "path": [
+                "templates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                },
+                {
+                  "disabled": false,
+                  "key": "tag",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "extended",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dbb05ba6-226b-47da-b2e2-38e9b12682f7",
+              "name": "A page of Template objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "tag",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "extended",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"name\": \"string\",\n    \"width\": 3783,\n    \"height\": 8730,\n    \"preview_url\": \"string\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"available_modifications\": [\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      }\n    ],\n    \"metadata\": \"string\",\n    \"created_at\": \"2022-12-23T14:50:39.006Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"name\": \"string\",\n    \"width\": 9901,\n    \"height\": 5053,\n    \"preview_url\": \"string\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"available_modifications\": [\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      }\n    ],\n    \"metadata\": \"string\",\n    \"created_at\": \"1961-04-04T12:55:19.155Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc41f246-8d0e-4aae-b814-24780837f532",
+          "name": "Retrieve a template",
+          "request": {
+            "name": "Retrieve a template",
+            "description": {},
+            "url": {
+              "path": [
+                "templates",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1cc9a0b6-f5e7-4bc6-97f5-4be33574cfa7",
+              "name": "A Template object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"name\": \"string\",\n  \"width\": 8488,\n  \"height\": 6350,\n  \"preview_url\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"available_modifications\": [\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    }\n  ],\n  \"metadata\": \"string\",\n  \"created_at\": \"1986-06-28T21:58:45.956Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd716eaf-873a-4f4f-85d0-2d8d21962d88",
+          "name": "Update a template",
+          "request": {
+            "name": "Update a template",
+            "description": {},
+            "url": {
+              "path": [
+                "templates",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"metadata\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"width\": \"<integer>\",\n  \"height\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "13bdbf45-9185-41d8-af80-92807e10f485",
+              "name": "Updated Template object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"metadata\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"width\": \"<integer>\",\n  \"height\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"name\": \"string\",\n  \"width\": 8488,\n  \"height\": 6350,\n  \"preview_url\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"available_modifications\": [\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    }\n  ],\n  \"metadata\": \"string\",\n  \"created_at\": \"1986-06-28T21:58:45.956Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ece8bca9-ff25-44d6-92d2-bbee2e35b739",
+          "name": "Delete a template",
+          "request": {
+            "name": "Delete a template",
+            "description": {},
+            "url": {
+              "path": [
+                "templates",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a88d5ace-ad9c-4425-85f0-bff4758ffa9e",
+              "name": "Template deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "templates",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b13254ba-0861-430a-8b45-5f770ea0c689",
+          "name": "Create a template set",
+          "request": {
+            "name": "Create a template set",
+            "description": {},
+            "url": {
+              "path": [
+                "template_sets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"templates\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ad4b57e3-b6d6-409a-8396-cb3ee6543483",
+              "name": "The created TemplateSet object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "template_sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"templates\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"name\": \"string\",\n  \"templates\": [\n    {\n      \"uid\": \"string\",\n      \"name\": \"string\",\n      \"width\": 6961,\n      \"height\": 590,\n      \"preview_url\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"available_modifications\": [\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        }\n      ],\n      \"metadata\": \"string\",\n      \"created_at\": \"1956-02-21T20:42:46.287Z\"\n    },\n    {\n      \"uid\": \"string\",\n      \"name\": \"string\",\n      \"width\": 190,\n      \"height\": 4186,\n      \"preview_url\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"available_modifications\": [\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        }\n      ],\n      \"metadata\": \"string\",\n      \"created_at\": \"2008-09-07T19:11:08.471Z\"\n    }\n  ],\n  \"available_modifications\": [\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    }\n  ],\n  \"created_at\": \"2008-11-10T04:00:06.384Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "add27a44-e8e1-4f15-8545-4e4a6b980701",
+          "name": "List template sets",
+          "request": {
+            "name": "List template sets",
+            "description": {},
+            "url": {
+              "path": [
+                "template_sets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9daad7d6-f7cd-4eda-855a-23ed555ff99a",
+              "name": "A page of TemplateSet objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "template_sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"name\": \"string\",\n    \"templates\": [\n      {\n        \"uid\": \"string\",\n        \"name\": \"string\",\n        \"width\": 2456,\n        \"height\": 720,\n        \"preview_url\": \"string\",\n        \"tags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"available_modifications\": [\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          },\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          }\n        ],\n        \"metadata\": \"string\",\n        \"created_at\": \"2017-01-02T16:59:22.821Z\"\n      },\n      {\n        \"uid\": \"string\",\n        \"name\": \"string\",\n        \"width\": 2266,\n        \"height\": 2735,\n        \"preview_url\": \"string\",\n        \"tags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"available_modifications\": [\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          },\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          }\n        ],\n        \"metadata\": \"string\",\n        \"created_at\": \"2021-04-19T18:32:33.979Z\"\n      }\n    ],\n    \"available_modifications\": [\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      }\n    ],\n    \"created_at\": \"1994-01-12T14:39:27.453Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"name\": \"string\",\n    \"templates\": [\n      {\n        \"uid\": \"string\",\n        \"name\": \"string\",\n        \"width\": 2414,\n        \"height\": 7462,\n        \"preview_url\": \"string\",\n        \"tags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"available_modifications\": [\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          },\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          }\n        ],\n        \"metadata\": \"string\",\n        \"created_at\": \"2016-04-27T12:34:44.273Z\"\n      },\n      {\n        \"uid\": \"string\",\n        \"name\": \"string\",\n        \"width\": 6585,\n        \"height\": 1020,\n        \"preview_url\": \"string\",\n        \"tags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"available_modifications\": [\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          },\n          {\n            \"name\": \"string\",\n            \"text\": \"string\",\n            \"color\": \"string\",\n            \"background\": \"string\",\n            \"image_url\": \"string\",\n            \"font_family\": \"string\"\n          }\n        ],\n        \"metadata\": \"string\",\n        \"created_at\": \"1990-09-12T14:36:35.531Z\"\n      }\n    ],\n    \"available_modifications\": [\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"text\": \"string\",\n        \"color\": \"string\",\n        \"background\": \"string\",\n        \"image_url\": \"string\",\n        \"font_family\": \"string\"\n      }\n    ],\n    \"created_at\": \"1956-02-06T11:15:04.993Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6342aff6-7e82-4999-a85c-e8939caaae5d",
+          "name": "Retrieve a template set",
+          "request": {
+            "name": "Retrieve a template set",
+            "description": {},
+            "url": {
+              "path": [
+                "template_sets",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "639459b7-c8ff-4251-b514-9c2ad243b102",
+              "name": "A TemplateSet object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "template_sets",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"name\": \"string\",\n  \"templates\": [\n    {\n      \"uid\": \"string\",\n      \"name\": \"string\",\n      \"width\": 5174,\n      \"height\": 3584,\n      \"preview_url\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"available_modifications\": [\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        }\n      ],\n      \"metadata\": \"string\",\n      \"created_at\": \"1962-05-24T07:05:05.491Z\"\n    },\n    {\n      \"uid\": \"string\",\n      \"name\": \"string\",\n      \"width\": 115,\n      \"height\": 8482,\n      \"preview_url\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"available_modifications\": [\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        }\n      ],\n      \"metadata\": \"string\",\n      \"created_at\": \"1970-05-13T14:36:09.269Z\"\n    }\n  ],\n  \"available_modifications\": [\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    }\n  ],\n  \"created_at\": \"1952-09-22T11:01:47.809Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a660a509-0755-4cc3-b190-14634a3f55c9",
+          "name": "Update a template set",
+          "request": {
+            "name": "Update a template set",
+            "description": {},
+            "url": {
+              "path": [
+                "template_sets",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"templates\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "62b174e8-7095-46ca-bf10-1168d6e3f77d",
+              "name": "Updated TemplateSet object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "template_sets",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templates\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"name\": \"string\",\n  \"templates\": [\n    {\n      \"uid\": \"string\",\n      \"name\": \"string\",\n      \"width\": 5174,\n      \"height\": 3584,\n      \"preview_url\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"available_modifications\": [\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        }\n      ],\n      \"metadata\": \"string\",\n      \"created_at\": \"1962-05-24T07:05:05.491Z\"\n    },\n    {\n      \"uid\": \"string\",\n      \"name\": \"string\",\n      \"width\": 115,\n      \"height\": 8482,\n      \"preview_url\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"available_modifications\": [\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"text\": \"string\",\n          \"color\": \"string\",\n          \"background\": \"string\",\n          \"image_url\": \"string\",\n          \"font_family\": \"string\"\n        }\n      ],\n      \"metadata\": \"string\",\n      \"created_at\": \"1970-05-13T14:36:09.269Z\"\n    }\n  ],\n  \"available_modifications\": [\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"text\": \"string\",\n      \"color\": \"string\",\n      \"background\": \"string\",\n      \"image_url\": \"string\",\n      \"font_family\": \"string\"\n    }\n  ],\n  \"created_at\": \"1952-09-22T11:01:47.809Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "81f7aff7-4364-490c-831e-130d546210a5",
+    "name": "Bannerbear Animated GIFs Templates API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.\n\nContact Support:\n Name: Bannerbear Support",
+      "type": "text/plain"
+    }
+  }
+}

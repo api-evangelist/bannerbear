@@ -1,0 +1,368 @@
+{
+  "item": [
+    {
+      "id": "8ebdab04-94f7-44f0-b0ab-cc9aae7d74ba",
+      "name": "Screenshots",
+      "description": {
+        "content": "Capture web page screenshots by URL.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87703e8a-7267-4287-9e37-9e5d113bcfcb",
+          "name": "Create a screenshot",
+          "request": {
+            "name": "Create a screenshot",
+            "description": {},
+            "url": {
+              "path": [
+                "screenshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<string>\",\n  \"webhook_url\": \"<string>\",\n  \"width\": 1200,\n  \"height\": \"<integer>\",\n  \"mobile\": \"<boolean>\",\n  \"language\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "38111c8c-bda6-4233-989d-06c1f74e976f",
+              "name": "Completed screenshot (synchronous host).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"webhook_url\": \"<string>\",\n  \"width\": 1200,\n  \"height\": \"<integer>\",\n  \"mobile\": \"<boolean>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"url\": \"string\",\n  \"screenshot_image_url\": \"string\",\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1984-02-23T03:44:33.023Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b264968a-7b2b-4366-b30e-a78bb619920f",
+              "name": "Accepted; screenshot is rendering.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"webhook_url\": \"<string>\",\n  \"width\": 1200,\n  \"height\": \"<integer>\",\n  \"mobile\": \"<boolean>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"url\": \"string\",\n  \"screenshot_image_url\": \"string\",\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1984-02-23T03:44:33.023Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ade1c3fb-678a-48cf-951d-4fa4c8df5e95",
+          "name": "List screenshots",
+          "request": {
+            "name": "List screenshots",
+            "description": {},
+            "url": {
+              "path": [
+                "screenshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c4fddd4c-65cb-4ef1-8183-1fc220116aa3",
+              "name": "A page of Screenshot objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"status\": \"pending\",\n    \"self\": \"string\",\n    \"url\": \"string\",\n    \"screenshot_image_url\": \"string\",\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1955-03-25T07:19:51.892Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"status\": \"pending\",\n    \"self\": \"string\",\n    \"url\": \"string\",\n    \"screenshot_image_url\": \"string\",\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1956-12-22T10:49:52.824Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "211cb7da-57ec-494f-98f3-82e656d5005c",
+          "name": "Retrieve a screenshot",
+          "request": {
+            "name": "Retrieve a screenshot",
+            "description": {},
+            "url": {
+              "path": [
+                "screenshots",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "35c0c1d3-c7b1-46fe-aa74-bac12cd4a21b",
+              "name": "A Screenshot object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "screenshots",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"url\": \"string\",\n  \"screenshot_image_url\": \"string\",\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1984-02-23T03:44:33.023Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b7f85910-692f-4a0a-a706-aa98beece394",
+    "name": "Bannerbear Animated GIFs Screenshots API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.\n\nContact Support:\n Name: Bannerbear Support",
+      "type": "text/plain"
+    }
+  }
+}

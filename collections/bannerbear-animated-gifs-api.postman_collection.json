@@ -1,0 +1,317 @@
+{
+  "item": [
+    {
+      "id": "f2ee526d-2472-48f0-a448-6308be7176c0",
+      "name": "Animated GIFs",
+      "description": {
+        "content": "Build animated GIFs from template frames.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "18d146f3-7765-4659-b683-6a2526d6324d",
+          "name": "Create an animated GIF",
+          "request": {
+            "name": "Create an animated GIF",
+            "description": {},
+            "url": {
+              "path": [
+                "animated_gifs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template\": \"<string>\",\n  \"frames\": [\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ]\n  ],\n  \"fps\": 1,\n  \"frame_durations\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"loop\": \"<boolean>\",\n  \"input_media_url\": \"<string>\",\n  \"webhook_url\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6fc5ec02-7e70-4a28-ba72-b749fcff0852",
+              "name": "Accepted; animated GIF is rendering.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "animated_gifs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"template\": \"<string>\",\n  \"frames\": [\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ]\n  ],\n  \"fps\": 1,\n  \"frame_durations\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"loop\": \"<boolean>\",\n  \"input_media_url\": \"<string>\",\n  \"webhook_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"completed\",\n  \"self\": \"string\",\n  \"image_url\": \"string\",\n  \"template\": \"string\",\n  \"frames\": [\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ]\n  ],\n  \"fps\": 9996.933705629368,\n  \"loop\": false,\n  \"webhook_url\": \"string\",\n  \"created_at\": \"1976-02-04T09:55:24.881Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84ac0726-dde4-4439-942a-bda962b72e55",
+          "name": "List animated GIFs",
+          "request": {
+            "name": "List animated GIFs",
+            "description": {},
+            "url": {
+              "path": [
+                "animated_gifs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b012fe9d-6957-45f8-8e1c-57683a2c057e",
+              "name": "A page of AnimatedGif objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "animated_gifs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"status\": \"pending\",\n    \"self\": \"string\",\n    \"image_url\": \"string\",\n    \"template\": \"string\",\n    \"frames\": [\n      [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ]\n    ],\n    \"fps\": 9237.590563686581,\n    \"loop\": false,\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1989-07-16T16:01:01.402Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"status\": \"failed\",\n    \"self\": \"string\",\n    \"image_url\": \"string\",\n    \"template\": \"string\",\n    \"frames\": [\n      [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ],\n      [\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"text\": \"<string>\",\n          \"color\": \"<string>\",\n          \"background\": \"<string>\",\n          \"image_url\": \"<string>\",\n          \"font_family\": \"<string>\"\n        }\n      ]\n    ],\n    \"fps\": 7626.27452645262,\n    \"loop\": true,\n    \"webhook_url\": \"string\",\n    \"created_at\": \"1990-09-09T06:44:36.201Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b4a952a3-4fed-450d-8029-e26d7c8bc63f",
+          "name": "Retrieve an animated GIF",
+          "request": {
+            "name": "Retrieve an animated GIF",
+            "description": {},
+            "url": {
+              "path": [
+                "animated_gifs",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d6d6f2ec-dbc6-4e2a-909a-35335bc625b1",
+              "name": "An AnimatedGif object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "animated_gifs",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"pending\",\n  \"self\": \"string\",\n  \"image_url\": \"string\",\n  \"template\": \"string\",\n  \"frames\": [\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ]\n  ],\n  \"fps\": 8269.047071250781,\n  \"loop\": true,\n  \"webhook_url\": \"string\",\n  \"created_at\": \"2018-09-16T18:17:50.111Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "313479b2-f9dc-4eb5-848e-a3997bdcc6ce",
+    "name": "Bannerbear Animated GIFs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.\n\nContact Support:\n Name: Bannerbear Support",
+      "type": "text/plain"
+    }
+  }
+}

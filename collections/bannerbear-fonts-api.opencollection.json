@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bannerbear Animated GIFs Fonts API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fonts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available fonts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/fonts"
+          },
+          "docs": "List available fonts"
+        },
+        {
+          "info": {
+            "name": "List available image effects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/effects"
+          },
+          "docs": "List available image effects"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

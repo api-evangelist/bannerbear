@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bannerbear Animated GIFs Screenshots API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Screenshots",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List screenshots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/screenshots",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated lists (25 per page)."
+              }
+            ]
+          },
+          "docs": "List screenshots"
+        },
+        {
+          "info": {
+            "name": "Create a screenshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/screenshots",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a screenshot"
+        },
+        {
+          "info": {
+            "name": "Retrieve a screenshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/screenshots/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieve a screenshot"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

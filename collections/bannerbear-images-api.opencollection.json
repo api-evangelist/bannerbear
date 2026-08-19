@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bannerbear Animated GIFs Images API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List images",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/images",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated lists (25 per page)."
+              }
+            ]
+          },
+          "docs": "List images"
+        },
+        {
+          "info": {
+            "name": "Create an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.bannerbear.com/v2/images",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an image by applying modifications to a template. Returns 202 Accepted on the async host; the image renders in the background and is delivered by webhook or retrieved by polling. On the sync host the completed Image object is returned with a 200."
+        },
+        {
+          "info": {
+            "name": "Retrieve an image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.bannerbear.com/v2/images/:uid",
+            "params": [
+              {
+                "name": "uid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieve an image"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

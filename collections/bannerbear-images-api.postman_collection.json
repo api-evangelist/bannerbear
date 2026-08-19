@@ -1,0 +1,371 @@
+{
+  "item": [
+    {
+      "id": "4477d9c2-36ea-4b4c-afa3-724b916e59bc",
+      "name": "Images",
+      "description": {
+        "content": "Auto-generate images from templates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e5272b0e-baed-46f6-b156-4f71b69af605",
+          "name": "Create an image",
+          "request": {
+            "name": "Create an image",
+            "description": {
+              "content": "Creates an image by applying modifications to a template. Returns 202 Accepted on the async host; the image renders in the background and is delivered by webhook or retrieved by polling. On the sync host the completed Image object is returned with a 200.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "images"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"transparent\": \"<boolean>\",\n  \"render_pdf\": \"<boolean>\",\n  \"metadata\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "41105ca3-b888-4e05-8393-d69c98bee35a",
+              "name": "Completed image (synchronous host).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"template\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"transparent\": \"<boolean>\",\n  \"render_pdf\": \"<boolean>\",\n  \"metadata\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"failed\",\n  \"self\": \"string\",\n  \"image_url\": \"string\",\n  \"image_url_png\": \"string\",\n  \"image_url_jpg\": \"string\",\n  \"template\": \"string\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"string\",\n  \"webhook_response_code\": 5059,\n  \"metadata\": \"string\",\n  \"created_at\": \"2006-05-28T02:09:33.962Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90b450d8-d1a6-406d-8de0-d39e271bb633",
+              "name": "Accepted; image is rendering.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"template\": \"<string>\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<string>\",\n  \"transparent\": \"<boolean>\",\n  \"render_pdf\": \"<boolean>\",\n  \"metadata\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"completed\",\n  \"self\": \"string\",\n  \"image_url\": \"string\",\n  \"image_url_png\": \"string\",\n  \"image_url_jpg\": \"string\",\n  \"template\": \"string\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"string\",\n  \"webhook_response_code\": 1935,\n  \"metadata\": \"string\",\n  \"created_at\": \"2000-11-18T20:41:32.155Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c677c4d-67b4-4730-986f-f62da1dfb40f",
+          "name": "List images",
+          "request": {
+            "name": "List images",
+            "description": {},
+            "url": {
+              "path": [
+                "images"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated lists (25 per page)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "41a8e59d-fa72-4cac-8805-080d143ec9d0",
+              "name": "A page of Image objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"status\": \"completed\",\n    \"self\": \"string\",\n    \"image_url\": \"string\",\n    \"image_url_png\": \"string\",\n    \"image_url_jpg\": \"string\",\n    \"template\": \"string\",\n    \"modifications\": [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    \"webhook_url\": \"string\",\n    \"webhook_response_code\": 6340,\n    \"metadata\": \"string\",\n    \"created_at\": \"2010-04-20T11:08:03.401Z\"\n  },\n  {\n    \"uid\": \"string\",\n    \"status\": \"failed\",\n    \"self\": \"string\",\n    \"image_url\": \"string\",\n    \"image_url_png\": \"string\",\n    \"image_url_jpg\": \"string\",\n    \"template\": \"string\",\n    \"modifications\": [\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"text\": \"<string>\",\n        \"color\": \"<string>\",\n        \"background\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"font_family\": \"<string>\"\n      }\n    ],\n    \"webhook_url\": \"string\",\n    \"webhook_response_code\": 8365,\n    \"metadata\": \"string\",\n    \"created_at\": \"1973-10-31T03:23:18.113Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "26f71a4d-b47e-4426-8450-6596d937fc8b",
+          "name": "Retrieve an image",
+          "request": {
+            "name": "Retrieve an image",
+            "description": {},
+            "url": {
+              "path": [
+                "images",
+                ":uid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uid",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "52058fa2-15f3-45c7-a3cb-3d16190018de",
+              "name": "An Image object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "images",
+                    ":uid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uid",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uid\": \"string\",\n  \"status\": \"completed\",\n  \"self\": \"string\",\n  \"image_url\": \"string\",\n  \"image_url_png\": \"string\",\n  \"image_url_jpg\": \"string\",\n  \"template\": \"string\",\n  \"modifications\": [\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"text\": \"<string>\",\n      \"color\": \"<string>\",\n      \"background\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"font_family\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"string\",\n  \"webhook_response_code\": 1935,\n  \"metadata\": \"string\",\n  \"created_at\": \"2000-11-18T20:41:32.155Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.bannerbear.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7e6b8898-55cc-45a6-852d-cfa3d36bde7c",
+    "name": "Bannerbear Animated GIFs Images API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.\n\nContact Support:\n Name: Bannerbear Support",
+      "type": "text/plain"
+    }
+  }
+}
