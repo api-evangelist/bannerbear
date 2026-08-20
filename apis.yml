@@ -22,6 +22,12 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/bannerbear.png
 tags:
+- Image-Generation
+- Video Generation
+- Templates
+- Media
+- Automation
+tags_raw:
 - Image Generation
 - Video Generation
 - Templates
@@ -61,6 +67,8 @@ apis:
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -85,6 +93,8 @@ apis:
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
+  - Collection
+  tags_raw:
   - Collections
   properties:
   - type: OpenAPI
@@ -133,6 +143,8 @@ apis:
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
+  - Image
+  tags_raw:
   - Images
   properties:
   - type: OpenAPI
