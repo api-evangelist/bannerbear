@@ -7,6 +7,18 @@ description: Bannerbear is an API-first platform for auto-generating images and 
   modifications to a template and renders branded marketing visuals, social media
   graphics, animated GIFs, screenshots, and videos at scale, with asynchronous
   webhook and polling delivery.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: open
