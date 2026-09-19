@@ -229,6 +229,8 @@ apis:
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
+  - Video
+  tags_raw:
   - Videos
   properties:
   - type: OpenAPI
