@@ -1,14 +1,7 @@
 {
   "provider": "bannerbear",
   "sources": [
-    "bannerbear-animated-gifs-api-openapi.yml",
-    "bannerbear-auth-api-openapi.yml",
-    "bannerbear-collections-api-openapi.yml",
-    "bannerbear-fonts-api-openapi.yml",
-    "bannerbear-images-api-openapi.yml",
-    "bannerbear-screenshots-api-openapi.yml",
-    "bannerbear-templates-api-openapi.yml",
-    "bannerbear-videos-api-openapi.yml"
+    "_original/bannerbear-openapi.yml"
   ],
   "outputs": [
     "bannerbear-animated-gifs-api-openapi.yml",
@@ -23,6 +16,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "bannerbear-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "bannerbear-animated-gifs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-collections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-fonts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-images-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-screenshots-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-templates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "bannerbear-videos-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

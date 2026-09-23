@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Bannerbear Animated GIFs Collections API
+  title: Bannerbear Collections API
   description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
   termsOfService: https://www.bannerbear.com/terms/
   contact:
@@ -77,22 +77,51 @@ paths:
                 $ref: '#/components/schemas/Collection'
 components:
   schemas:
-    Modification:
+    Collection:
       type: object
-      description: A single layer modification applied to a template.
       properties:
-        name:
+        uid:
           type: string
-          description: The name of the layer to modify.
-        text:
+        status:
           type: string
-        color:
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
           type: string
-        background:
+        template_set:
           type: string
-        image_url:
+        image_urls:
+          type: object
+          additionalProperties:
+            type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        webhook_url:
           type: string
-        font_family:
+        created_at:
+          type: string
+          format: date-time
+    CreateCollectionRequest:
+      type: object
+      required:
+      - template_set
+      - modifications
+      properties:
+        template_set:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        transparent:
+          type: boolean
+        metadata:
           type: string
     Image:
       type: object
@@ -128,52 +157,23 @@ components:
         created_at:
           type: string
           format: date-time
-    CreateCollectionRequest:
+    Modification:
       type: object
-      required:
-      - template_set
-      - modifications
+      description: A single layer modification applied to a template.
       properties:
-        template_set:
+        name:
           type: string
-        modifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Modification'
-        webhook_url:
+          description: The name of the layer to modify.
+        text:
           type: string
-        transparent:
-          type: boolean
-        metadata:
+        color:
           type: string
-    Collection:
-      type: object
-      properties:
-        uid:
+        background:
           type: string
-        status:
+        image_url:
           type: string
-          enum:
-          - pending
-          - completed
-          - failed
-        self:
+        font_family:
           type: string
-        template_set:
-          type: string
-        image_urls:
-          type: object
-          additionalProperties:
-            type: string
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
-        webhook_url:
-          type: string
-        created_at:
-          type: string
-          format: date-time
   parameters:
     Page:
       name: page

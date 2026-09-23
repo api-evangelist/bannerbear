@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Bannerbear Animated GIFs Videos API
+  title: Bannerbear Videos API
   description: The Bannerbear API auto-generates images and videos from reusable templates. A request applies an array of modifications (text, image, and color layer changes) to a template and renders the output. Most create operations are asynchronous, returning 202 Accepted; results are delivered via webhook callback or retrieved by polling the resource endpoint. Synchronous variants are available on the sync host for images, collections, and screenshots.
   termsOfService: https://www.bannerbear.com/terms/
   contact:
@@ -97,23 +97,34 @@ paths:
                 $ref: '#/components/schemas/Video'
 components:
   schemas:
-    Modification:
+    Video:
       type: object
-      description: A single layer modification applied to a template.
       properties:
-        name:
+        uid:
           type: string
-          description: The name of the layer to modify.
-        text:
+        status:
           type: string
-        color:
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
           type: string
-        background:
+        video_url:
           type: string
-        image_url:
+        video_template:
           type: string
-        font_family:
+        input_media_url:
           type: string
+        approval_required:
+          type: boolean
+        approved:
+          type: boolean
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
     CreateVideoRequest:
       type: object
       required:
@@ -151,34 +162,23 @@ components:
               $ref: '#/components/schemas/Modification'
         create_gif_preview:
           type: boolean
-    Video:
+    Modification:
       type: object
+      description: A single layer modification applied to a template.
       properties:
-        uid:
+        name:
           type: string
-        status:
+          description: The name of the layer to modify.
+        text:
           type: string
-          enum:
-          - pending
-          - completed
-          - failed
-        self:
+        color:
           type: string
-        video_url:
+        background:
           type: string
-        video_template:
+        image_url:
           type: string
-        input_media_url:
+        font_family:
           type: string
-        approval_required:
-          type: boolean
-        approved:
-          type: boolean
-        webhook_url:
-          type: string
-        created_at:
-          type: string
-          format: date-time
   parameters:
     Page:
       name: page

@@ -1,0 +1,29 @@
+# Front Door AI Index — bannerbear — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: bannerbear
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.bannerbear.com
+  final_host: www.bannerbear.com
+  ownership: own
+  owner: bannerbear
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 14
+  host_score: 14
+  density: 28.34
+  words: 494
+  tiers:
+    agentic: 7
+    core: 7
+    model: 0
+  ambiguous: 8
+  top_terms:
+    AI: 7
+    agent: 7
+    AI agent: 6
+    MCP: 1
+    automation: 1
