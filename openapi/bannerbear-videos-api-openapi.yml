@@ -96,35 +96,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Video'
 components:
+  parameters:
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
   schemas:
-    Video:
-      type: object
-      properties:
-        uid:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - completed
-          - failed
-        self:
-          type: string
-        video_url:
-          type: string
-        video_template:
-          type: string
-        input_media_url:
-          type: string
-        approval_required:
-          type: boolean
-        approved:
-          type: boolean
-        webhook_url:
-          type: string
-        created_at:
-          type: string
-          format: date-time
     CreateVideoRequest:
       type: object
       required:
@@ -179,21 +166,34 @@ components:
           type: string
         font_family:
           type: string
-  parameters:
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
-    Uid:
-      name: uid
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
+    Video:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
+          type: string
+        video_url:
+          type: string
+        video_template:
+          type: string
+        input_media_url:
+          type: string
+        approval_required:
+          type: boolean
+        approved:
+          type: boolean
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
   securitySchemes:
     bearerAuth:
       type: http

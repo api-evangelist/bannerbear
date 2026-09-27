@@ -211,7 +211,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/TemplateSet'
 components:
+  parameters:
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
   schemas:
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
     TemplateSet:
       type: object
       properties:
@@ -230,23 +262,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Modification:
-      type: object
-      description: A single layer modification applied to a template.
-      properties:
-        name:
-          type: string
-          description: The name of the layer to modify.
-        text:
-          type: string
-        color:
-          type: string
-        background:
-          type: string
-        image_url:
-          type: string
-        font_family:
-          type: string
     Template:
       type: object
       properties:
@@ -273,21 +288,6 @@ components:
         created_at:
           type: string
           format: date-time
-  parameters:
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
-    Uid:
-      name: uid
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -76,53 +76,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Collection'
 components:
+  parameters:
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
   schemas:
-    Collection:
-      type: object
-      properties:
-        uid:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - completed
-          - failed
-        self:
-          type: string
-        template_set:
-          type: string
-        image_urls:
-          type: object
-          additionalProperties:
-            type: string
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
-        webhook_url:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-    CreateCollectionRequest:
-      type: object
-      required:
-      - template_set
-      - modifications
-      properties:
-        template_set:
-          type: string
-        modifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Modification'
-        webhook_url:
-          type: string
-        transparent:
-          type: boolean
-        metadata:
-          type: string
     Image:
       type: object
       properties:
@@ -174,21 +143,52 @@ components:
           type: string
         font_family:
           type: string
-  parameters:
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
-    Uid:
-      name: uid
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
+    Collection:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
+          type: string
+        template_set:
+          type: string
+        image_urls:
+          type: object
+          additionalProperties:
+            type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateCollectionRequest:
+      type: object
+      required:
+      - template_set
+      - modifications
+      properties:
+        template_set:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        transparent:
+          type: boolean
+        metadata:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http
