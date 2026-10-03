@@ -76,21 +76,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Image'
 components:
-  parameters:
-    Uid:
-      name: uid
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
   schemas:
     Image:
       type: object
@@ -167,6 +152,21 @@ components:
           description: Also render a PDF (consumes 3x quota).
         metadata:
           type: string
+  parameters:
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
   securitySchemes:
     bearerAuth:
       type: http

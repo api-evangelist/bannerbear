@@ -112,6 +112,23 @@ components:
         type: integer
         default: 1
   schemas:
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
+          type: string
     CreateVideoRequest:
       type: object
       required:
@@ -149,23 +166,6 @@ components:
               $ref: '#/components/schemas/Modification'
         create_gif_preview:
           type: boolean
-    Modification:
-      type: object
-      description: A single layer modification applied to a template.
-      properties:
-        name:
-          type: string
-          description: The name of the layer to modify.
-        text:
-          type: string
-        color:
-          type: string
-        background:
-          type: string
-        image_url:
-          type: string
-        font_family:
-          type: string
     Video:
       type: object
       properties:

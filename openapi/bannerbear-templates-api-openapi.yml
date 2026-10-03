@@ -211,22 +211,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/TemplateSet'
 components:
-  parameters:
-    Uid:
-      name: uid
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
   schemas:
+    Template:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        preview_url:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        available_modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        metadata:
+          type: string
+        created_at:
+          type: string
+          format: date-time
     Modification:
       type: object
       description: A single layer modification applied to a template.
@@ -262,32 +273,21 @@ components:
         created_at:
           type: string
           format: date-time
-    Template:
-      type: object
-      properties:
-        uid:
-          type: string
-        name:
-          type: string
-        width:
-          type: integer
-        height:
-          type: integer
-        preview_url:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-        available_modifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Modification'
-        metadata:
-          type: string
-        created_at:
-          type: string
-          format: date-time
+  parameters:
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
   securitySchemes:
     bearerAuth:
       type: http
