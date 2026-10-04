@@ -77,52 +77,6 @@ paths:
                 $ref: '#/components/schemas/Collection'
 components:
   schemas:
-    Collection:
-      type: object
-      properties:
-        uid:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - completed
-          - failed
-        self:
-          type: string
-        template_set:
-          type: string
-        image_urls:
-          type: object
-          additionalProperties:
-            type: string
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
-        webhook_url:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-    CreateCollectionRequest:
-      type: object
-      required:
-      - template_set
-      - modifications
-      properties:
-        template_set:
-          type: string
-        modifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Modification'
-        webhook_url:
-          type: string
-        transparent:
-          type: boolean
-        metadata:
-          type: string
     Image:
       type: object
       properties:
@@ -153,6 +107,52 @@ components:
         webhook_response_code:
           type: integer
         metadata:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateCollectionRequest:
+      type: object
+      required:
+      - template_set
+      - modifications
+      properties:
+        template_set:
+          type: string
+        modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        webhook_url:
+          type: string
+        transparent:
+          type: boolean
+        metadata:
+          type: string
+    Collection:
+      type: object
+      properties:
+        uid:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - failed
+        self:
+          type: string
+        template_set:
+          type: string
+        image_urls:
+          type: object
+          additionalProperties:
+            type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        webhook_url:
           type: string
         created_at:
           type: string

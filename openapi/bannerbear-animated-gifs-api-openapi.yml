@@ -70,6 +70,34 @@ paths:
                 $ref: '#/components/schemas/AnimatedGif'
 components:
   schemas:
+    CreateAnimatedGifRequest:
+      type: object
+      required:
+      - template
+      - frames
+      properties:
+        template:
+          type: string
+        frames:
+          type: array
+          maxItems: 30
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Modification'
+        fps:
+          type: number
+          default: 1
+        frame_durations:
+          type: array
+          items:
+            type: number
+        loop:
+          type: boolean
+        input_media_url:
+          type: string
+        webhook_url:
+          type: string
     AnimatedGif:
       type: object
       properties:
@@ -118,34 +146,6 @@ components:
         image_url:
           type: string
         font_family:
-          type: string
-    CreateAnimatedGifRequest:
-      type: object
-      required:
-      - template
-      - frames
-      properties:
-        template:
-          type: string
-        frames:
-          type: array
-          maxItems: 30
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Modification'
-        fps:
-          type: number
-          default: 1
-        frame_durations:
-          type: array
-          items:
-            type: number
-        loop:
-          type: boolean
-        input_media_url:
-          type: string
-        webhook_url:
           type: string
   parameters:
     Uid:

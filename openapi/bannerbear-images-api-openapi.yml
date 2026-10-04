@@ -111,23 +111,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Modification:
-      type: object
-      description: A single layer modification applied to a template.
-      properties:
-        name:
-          type: string
-          description: The name of the layer to modify.
-        text:
-          type: string
-        color:
-          type: string
-        background:
-          type: string
-        image_url:
-          type: string
-        font_family:
-          type: string
     CreateImageRequest:
       type: object
       required:
@@ -151,6 +134,23 @@ components:
           type: boolean
           description: Also render a PDF (consumes 3x quota).
         metadata:
+          type: string
+    Modification:
+      type: object
+      description: A single layer modification applied to a template.
+      properties:
+        name:
+          type: string
+          description: The name of the layer to modify.
+        text:
+          type: string
+        color:
+          type: string
+        background:
+          type: string
+        image_url:
+          type: string
+        font_family:
           type: string
   parameters:
     Uid:

@@ -212,6 +212,24 @@ paths:
                 $ref: '#/components/schemas/TemplateSet'
 components:
   schemas:
+    TemplateSet:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        available_modifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modification'
+        created_at:
+          type: string
+          format: date-time
     Template:
       type: object
       properties:
@@ -255,24 +273,6 @@ components:
           type: string
         font_family:
           type: string
-    TemplateSet:
-      type: object
-      properties:
-        uid:
-          type: string
-        name:
-          type: string
-        templates:
-          type: array
-          items:
-            $ref: '#/components/schemas/Template'
-        available_modifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Modification'
-        created_at:
-          type: string
-          format: date-time
   parameters:
     Uid:
       name: uid
