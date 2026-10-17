@@ -120,13 +120,6 @@ components:
           type: string
           description: ISO 639-1 two-letter language code.
   parameters:
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
     Uid:
       name: uid
       in: path
@@ -134,6 +127,13 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: string
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
   securitySchemes:
     bearerAuth:
       type: http

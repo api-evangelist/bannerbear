@@ -96,6 +96,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/Video'
 components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number for paginated lists (25 per page).
+      schema:
+        type: integer
+        default: 1
+    Uid:
+      name: uid
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
   schemas:
     Video:
       type: object
@@ -179,21 +194,6 @@ components:
           type: string
         font_family:
           type: string
-  parameters:
-    Uid:
-      name: uid
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
-    Page:
-      name: page
-      in: query
-      description: Page number for paginated lists (25 per page).
-      schema:
-        type: integer
-        default: 1
   securitySchemes:
     bearerAuth:
       type: http
