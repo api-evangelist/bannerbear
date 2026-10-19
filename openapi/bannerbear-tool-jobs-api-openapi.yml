@@ -1,0 +1,160 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Tool Jobs API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Tool Jobs
+paths:
+  /tool_jobs:
+    get:
+      summary: List tool jobs
+      description: Newest first, 20 per page. Same polling shape /v5/images uses — Zapier / integration triggers can dedupe by `uid` and stop once they see a known one.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Paginated list of tool jobs (any tool_type, any status). `outputs` shape varies per-tool — see each tool's POST endpoint.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                    tool:
+                      type: string
+                      description: Tool slug that dispatched this job
+                    status:
+                      type: string
+                      enum:
+                      - pending
+                      - running
+                      - completed
+                      - failed
+                      description: pending → running → completed / failed
+                    progress:
+                      type: integer
+                      minimum: 0
+                      maximum: 100
+                      description: 0-100 job progress, 100 once completed
+                    inputs:
+                      type: object
+                      description: Inputs the job was created with
+                    outputs:
+                      type: object
+                      description: Tool-specific output. Shape depends on the tool — see each tool's POST endpoint for the concrete keys.
+                    metadata:
+                      type: string
+                      nullable: true
+                      description: Arbitrary metadata string round-tripped from the create request
+                    self:
+                      type: string
+                      format: uri
+                    created_at:
+                      type: string
+                      format: date-time
+                    completed_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    error_message:
+                      type: string
+                      nullable: true
+                      description: Human-readable failure reason (only present on failed jobs)
+      tags:
+      - Tool Jobs
+      operationId: getToolJobs
+      x-operation-id-source: derived
+  /tool_jobs/{uid}:
+    get:
+      summary: Get a tool job
+      description: Poll the status and outputs of a tool run. The `outputs` object's shape depends on which tool created the job — refer to the tool's POST endpoint for the concrete keys.
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Tool job details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    description: Tool slug that dispatched this job
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    description: Tool-specific output. Shape depends on the tool — see each tool's POST endpoint for the concrete keys.
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '404':
+          description: Tool job not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tool Jobs
+      operationId: getToolJobsByUid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

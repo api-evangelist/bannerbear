@@ -50,106 +50,6 @@ created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.23'
 apis:
-- aid: bannerbear:bannerbear-animated-gifs-api
-  name: Bannerbear Animated GIFs API
-  description: Build animated GIFs from template frames.
-  humanURL: https://developers.bannerbear.com/
-  baseURL: https://api.bannerbear.com/v2
-  tags:
-  - Animated GIFs
-  properties:
-  - type: OpenAPI
-    url: openapi/bannerbear-animated-gifs-api-openapi.yml
-  - type: Documentation
-    url: https://www.bannerbear.com/product/image-generation-api/
-  - type: APIReference
-    url: https://developers.bannerbear.com/
-  - type: PostmanCollection
-    url: collections/bannerbear.postman_collection.json
-  - type: Documentation
-    url: https://www.bannerbear.com/product/video-generation-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/product/url-to-screenshot-api/
-  - type: Documentation
-    url: https://developers.bannerbear.com/
-- aid: bannerbear:bannerbear-auth-api
-  name: Bannerbear Auth API
-  description: API key verification and account status.
-  humanURL: https://developers.bannerbear.com/
-  baseURL: https://api.bannerbear.com/v2
-  tags:
-  - Authentication
-  tags_raw:
-  - Auth
-  properties:
-  - type: OpenAPI
-    url: openapi/bannerbear-auth-api-openapi.yml
-  - type: Documentation
-    url: https://www.bannerbear.com/product/image-generation-api/
-  - type: APIReference
-    url: https://developers.bannerbear.com/
-  - type: PostmanCollection
-    url: collections/bannerbear.postman_collection.json
-  - type: Documentation
-    url: https://www.bannerbear.com/product/video-generation-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/product/url-to-screenshot-api/
-  - type: Documentation
-    url: https://developers.bannerbear.com/
-- aid: bannerbear:bannerbear-collections-api
-  name: Bannerbear Collections API
-  description: Generate multiple images from a template set.
-  humanURL: https://developers.bannerbear.com/
-  baseURL: https://api.bannerbear.com/v2
-  tags:
-  - Collection
-  tags_raw:
-  - Collections
-  properties:
-  - type: OpenAPI
-    url: openapi/bannerbear-collections-api-openapi.yml
-  - type: Documentation
-    url: https://www.bannerbear.com/product/image-generation-api/
-  - type: APIReference
-    url: https://developers.bannerbear.com/
-  - type: PostmanCollection
-    url: collections/bannerbear.postman_collection.json
-  - type: Documentation
-    url: https://www.bannerbear.com/product/video-generation-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/product/url-to-screenshot-api/
-  - type: Documentation
-    url: https://developers.bannerbear.com/
-- aid: bannerbear:bannerbear-fonts-api
-  name: Bannerbear Fonts API
-  description: Reference fonts and effects.
-  humanURL: https://developers.bannerbear.com/
-  baseURL: https://api.bannerbear.com/v2
-  tags:
-  - Fonts
-  properties:
-  - type: OpenAPI
-    url: openapi/bannerbear-fonts-api-openapi.yml
-  - type: Documentation
-    url: https://www.bannerbear.com/product/image-generation-api/
-  - type: APIReference
-    url: https://developers.bannerbear.com/
-  - type: PostmanCollection
-    url: collections/bannerbear.postman_collection.json
-  - type: Documentation
-    url: https://www.bannerbear.com/product/video-generation-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
-  - type: Documentation
-    url: https://www.bannerbear.com/product/url-to-screenshot-api/
-  - type: Documentation
-    url: https://developers.bannerbear.com/
 - aid: bannerbear:bannerbear-images-api
   name: Bannerbear Images API
   description: Auto-generate images from templates.
@@ -176,16 +76,16 @@ apis:
     url: https://www.bannerbear.com/product/url-to-screenshot-api/
   - type: Documentation
     url: https://developers.bannerbear.com/
-- aid: bannerbear:bannerbear-screenshots-api
-  name: Bannerbear Screenshots API
-  description: Capture web page screenshots by URL.
+- aid: bannerbear:bannerbear-account-api
+  name: Bannerbear Account API
+  description: The Account API from Bannerbear — 1 operation(s) for account.
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
-  - Screenshots
+  - Account
   properties:
   - type: OpenAPI
-    url: openapi/bannerbear-screenshots-api-openapi.yml
+    url: openapi/bannerbear-account-api-openapi.yml
   - type: Documentation
     url: https://www.bannerbear.com/product/image-generation-api/
   - type: APIReference
@@ -200,16 +100,16 @@ apis:
     url: https://www.bannerbear.com/product/url-to-screenshot-api/
   - type: Documentation
     url: https://developers.bannerbear.com/
-- aid: bannerbear:bannerbear-templates-api
-  name: Bannerbear Templates API
-  description: Manage templates and template sets.
+- aid: bannerbear:bannerbear-animation-templates-api
+  name: Bannerbear Animation Templates API
+  description: The Animation Templates API from Bannerbear — 3 operation(s) for animation templates.
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
-  - Templates
+  - Animation Templates
   properties:
   - type: OpenAPI
-    url: openapi/bannerbear-templates-api-openapi.yml
+    url: openapi/bannerbear-animation-templates-api-openapi.yml
   - type: Documentation
     url: https://www.bannerbear.com/product/image-generation-api/
   - type: APIReference
@@ -224,18 +124,256 @@ apis:
     url: https://www.bannerbear.com/product/url-to-screenshot-api/
   - type: Documentation
     url: https://developers.bannerbear.com/
-- aid: bannerbear:bannerbear-videos-api
-  name: Bannerbear Videos API
-  description: Render videos from video templates.
+- aid: bannerbear:bannerbear-animations-api
+  name: Bannerbear Animations API
+  description: The Animations API from Bannerbear — 2 operation(s) for animations.
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
-  - Video
-  tags_raw:
-  - Videos
+  - Animations
   properties:
   - type: OpenAPI
-    url: openapi/bannerbear-videos-api-openapi.yml
+    url: openapi/bannerbear-animations-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-assets-api
+  name: Bannerbear Assets API
+  description: The Assets API from Bannerbear — 3 operation(s) for assets.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-assets-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-batches-api
+  name: Bannerbear Batches API
+  description: The Batches API from Bannerbear — 2 operation(s) for batches.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Batches
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-batches-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-image-templates-api
+  name: Bannerbear Image Templates API
+  description: The Image Templates API from Bannerbear — 2 operation(s) for image templates.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Image Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-image-templates-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-instant-urls-api
+  name: Bannerbear Instant Urls API
+  description: The Instant Urls API from Bannerbear — 2 operation(s) for instant urls.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Instant Urls
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-instant-urls-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-publications-api
+  name: Bannerbear Publications API
+  description: The Publications API from Bannerbear — 3 operation(s) for publications.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Publications
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-publications-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-tool-jobs-api
+  name: Bannerbear Tool Jobs API
+  description: The Tool Jobs API from Bannerbear — 2 operation(s) for tool jobs.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Tool Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-tool-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-tools-api
+  name: Bannerbear Tools API
+  description: The Tools API from Bannerbear — 21 operation(s) for tools.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Tools
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-tools-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-webhooks-api
+  name: Bannerbear Webhooks API
+  description: The Webhooks API from Bannerbear — 2 operation(s) for webhooks.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-workflow-runs-api
+  name: Bannerbear Workflow Runs API
+  description: The Workflow Runs API from Bannerbear — 2 operation(s) for workflow runs.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Workflow Runs
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-workflow-runs-api-openapi.yml
+  - type: Documentation
+    url: https://www.bannerbear.com/product/image-generation-api/
+  - type: APIReference
+    url: https://developers.bannerbear.com/
+  - type: PostmanCollection
+    url: collections/bannerbear.postman_collection.json
+  - type: Documentation
+    url: https://www.bannerbear.com/product/video-generation-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/
+  - type: Documentation
+    url: https://www.bannerbear.com/product/url-to-screenshot-api/
+  - type: Documentation
+    url: https://developers.bannerbear.com/
+- aid: bannerbear:bannerbear-workflows-api
+  name: Bannerbear Workflows API
+  description: The Workflows API from Bannerbear — 2 operation(s) for workflows.
+  humanURL: https://developers.bannerbear.com/
+  baseURL: https://api.bannerbear.com/v2
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/bannerbear-workflows-api-openapi.yml
   - type: Documentation
     url: https://www.bannerbear.com/product/image-generation-api/
   - type: APIReference

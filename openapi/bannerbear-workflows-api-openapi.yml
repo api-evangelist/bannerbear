@@ -1,0 +1,591 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Workflows API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Workflows
+paths:
+  /workflows:
+    get:
+      summary: List workflows
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        '200':
+          description: Paginated list of workflows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    inputs:
+                      type: object
+                      description: Inputs this workflow accepts, keyed by name. Each value is { type, required }. `url`-typed inputs are validated as http(s) URLs when a run is created.
+                      additionalProperties:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - string
+                            - url
+                            - number
+                            - boolean
+                          required:
+                            type: boolean
+                    steps:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            description: Stable handle for this step; later steps reference it as {{steps.<key>.<output>}}
+                          type:
+                            type: string
+                            enum:
+                            - tool
+                            - image
+                            - animation
+                            description: What kind of operation this step performs
+                          ref:
+                            type: string
+                            description: Tool slug, or template UID for image / animation steps
+                          label:
+                            type: string
+                            description: Human name of the step's target — the tool's label or the template's name
+                          inputs:
+                            type: object
+                            description: Step payload, with {{inputs.x}} / {{steps.x.y}} references unresolved
+                      description: Steps in run order
+                    ui_write_access:
+                      type: string
+                      enum:
+                      - owner_only
+                      - team
+                    api_write_access:
+                      type: string
+                      enum:
+                      - team
+                      - owner_only
+                      - nobody
+                      description: Who may run this workflow via the API
+                    created_at:
+                      type: string
+                      format: date-time
+      tags:
+      - Workflows
+      operationId: getWorkflows
+      x-operation-id-source: derived
+    post:
+      summary: Create a workflow
+      description: Create a workflow with its inputs and steps in one call. Every step's `ref` is validated against its adapter — an unknown tool slug or a template UID outside this workspace is rejected — and a step may only reference steps before it.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                  nullable: true
+                tags:
+                  type: array
+                  items:
+                    type: string
+                inputs:
+                  type: object
+                  description: Inputs the workflow accepts, keyed by name. Omit to leave the existing inputs untouched; send {} to clear them.
+                  additionalProperties:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                        - string
+                        - url
+                        - number
+                        - boolean
+                        description: '`url` is validated as an http(s) URL when a run is created'
+                      required:
+                        type: boolean
+                steps:
+                  type: array
+                  description: The ordered step list, replaced wholesale. Array order IS execution order, so reorder by sending the array in the order you want. Omit to leave the existing steps untouched. A step dropped from the array is discarded, not deleted — its past runs still reference it.
+                  items:
+                    type: object
+                    required:
+                    - key
+                    - type
+                    - ref
+                    properties:
+                      key:
+                        type: string
+                        pattern: ^[a-z0-9_]+$
+                        description: Stable handle for this step, unique within the workflow. Later steps reference its output as {{steps.<key>.<output>}}. Lowercase letters, numbers and underscores.
+                      type:
+                        type: string
+                        enum:
+                        - tool
+                        - image
+                        - animation
+                        description: What kind of operation this step performs
+                      ref:
+                        type: string
+                        description: What it operates on — a tool slug for `tool` steps (see GET /tools), or a template UID for `image` and `animation` steps
+                      inputs:
+                        type: object
+                        description: Step payload. Values may reference the workflow's own inputs as {{inputs.<name>}} or an EARLIER step's output as {{steps.<key>.<output>}} — referencing a later step is rejected.
+              required:
+              - name
+      responses:
+        '201':
+          description: Workflow created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  inputs:
+                    type: object
+                    description: Inputs this workflow accepts, keyed by name. Each value is { type, required }. `url`-typed inputs are validated as http(s) URLs when a run is created.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          - url
+                          - number
+                          - boolean
+                        required:
+                          type: boolean
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          description: Stable handle for this step; later steps reference it as {{steps.<key>.<output>}}
+                        type:
+                          type: string
+                          enum:
+                          - tool
+                          - image
+                          - animation
+                          description: What kind of operation this step performs
+                        ref:
+                          type: string
+                          description: Tool slug, or template UID for image / animation steps
+                        label:
+                          type: string
+                          description: Human name of the step's target — the tool's label or the template's name
+                        inputs:
+                          type: object
+                          description: Step payload, with {{inputs.x}} / {{steps.x.y}} references unresolved
+                    description: Steps in run order
+                  ui_write_access:
+                    type: string
+                    enum:
+                    - owner_only
+                    - team
+                  api_write_access:
+                    type: string
+                    enum:
+                    - team
+                    - owner_only
+                    - nobody
+                    description: Who may run this workflow via the API
+                  created_at:
+                    type: string
+                    format: date-time
+        '422':
+          description: Validation failure — missing name, duplicate step key, unknown ref, or a forward step reference
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Workflows
+      operationId: postWorkflows
+      x-operation-id-source: derived
+  /workflows/{uid}:
+    patch:
+      summary: Update a workflow
+      description: Change metadata, inputs or steps. Each of `inputs` and `steps` is replaced wholesale when present and left alone when omitted, so renaming a workflow does not disturb its definition. Read the workflow first and send back the full array with your changes applied.
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                  nullable: true
+                tags:
+                  type: array
+                  items:
+                    type: string
+                inputs:
+                  type: object
+                  description: Inputs the workflow accepts, keyed by name. Omit to leave the existing inputs untouched; send {} to clear them.
+                  additionalProperties:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                        - string
+                        - url
+                        - number
+                        - boolean
+                        description: '`url` is validated as an http(s) URL when a run is created'
+                      required:
+                        type: boolean
+                steps:
+                  type: array
+                  description: The ordered step list, replaced wholesale. Array order IS execution order, so reorder by sending the array in the order you want. Omit to leave the existing steps untouched. A step dropped from the array is discarded, not deleted — its past runs still reference it.
+                  items:
+                    type: object
+                    required:
+                    - key
+                    - type
+                    - ref
+                    properties:
+                      key:
+                        type: string
+                        pattern: ^[a-z0-9_]+$
+                        description: Stable handle for this step, unique within the workflow. Later steps reference its output as {{steps.<key>.<output>}}. Lowercase letters, numbers and underscores.
+                      type:
+                        type: string
+                        enum:
+                        - tool
+                        - image
+                        - animation
+                        description: What kind of operation this step performs
+                      ref:
+                        type: string
+                        description: What it operates on — a tool slug for `tool` steps (see GET /tools), or a template UID for `image` and `animation` steps
+                      inputs:
+                        type: object
+                        description: Step payload. Values may reference the workflow's own inputs as {{inputs.<name>}} or an EARLIER step's output as {{steps.<key>.<output>}} — referencing a later step is rejected.
+      responses:
+        '200':
+          description: Updated workflow
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  inputs:
+                    type: object
+                    description: Inputs this workflow accepts, keyed by name. Each value is { type, required }. `url`-typed inputs are validated as http(s) URLs when a run is created.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          - url
+                          - number
+                          - boolean
+                        required:
+                          type: boolean
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          description: Stable handle for this step; later steps reference it as {{steps.<key>.<output>}}
+                        type:
+                          type: string
+                          enum:
+                          - tool
+                          - image
+                          - animation
+                          description: What kind of operation this step performs
+                        ref:
+                          type: string
+                          description: Tool slug, or template UID for image / animation steps
+                        label:
+                          type: string
+                          description: Human name of the step's target — the tool's label or the template's name
+                        inputs:
+                          type: object
+                          description: Step payload, with {{inputs.x}} / {{steps.x.y}} references unresolved
+                    description: Steps in run order
+                  ui_write_access:
+                    type: string
+                    enum:
+                    - owner_only
+                    - team
+                  api_write_access:
+                    type: string
+                    enum:
+                    - team
+                    - owner_only
+                    - nobody
+                    description: Who may run this workflow via the API
+                  created_at:
+                    type: string
+                    format: date-time
+        '403':
+          description: Workflow's api_write_access is `owner_only` and the caller's key is not owned by its creator
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Workflow not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Validation failure — duplicate step key, unknown ref, or a forward step reference
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '423':
+          description: Workflow is locked from API updates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Workflows
+      operationId: patchWorkflowsByUid
+      x-operation-id-source: derived
+    delete:
+      summary: Delete a workflow
+      description: Discards the workflow. Its past runs are kept.
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Workflow discarded
+        '403':
+          description: Workflow is restricted to updates from its owner's API keys
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Workflow not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '423':
+          description: Workflow is locked from API updates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Workflows
+      operationId: deleteWorkflowsByUid
+      x-operation-id-source: derived
+    get:
+      summary: Get a workflow
+      description: Returns the workflow's definition — the inputs it accepts and the steps it runs, in order. Call this before POST /workflow_runs to learn what to send.
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Workflow definition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  inputs:
+                    type: object
+                    description: Inputs this workflow accepts, keyed by name. Each value is { type, required }. `url`-typed inputs are validated as http(s) URLs when a run is created.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          - url
+                          - number
+                          - boolean
+                        required:
+                          type: boolean
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          description: Stable handle for this step; later steps reference it as {{steps.<key>.<output>}}
+                        type:
+                          type: string
+                          enum:
+                          - tool
+                          - image
+                          - animation
+                          description: What kind of operation this step performs
+                        ref:
+                          type: string
+                          description: Tool slug, or template UID for image / animation steps
+                        label:
+                          type: string
+                          description: Human name of the step's target — the tool's label or the template's name
+                        inputs:
+                          type: object
+                          description: Step payload, with {{inputs.x}} / {{steps.x.y}} references unresolved
+                    description: Steps in run order
+                  ui_write_access:
+                    type: string
+                    enum:
+                    - owner_only
+                    - team
+                  api_write_access:
+                    type: string
+                    enum:
+                    - team
+                    - owner_only
+                    - nobody
+                    description: Who may run this workflow via the API
+                  created_at:
+                    type: string
+                    format: date-time
+        '404':
+          description: Workflow not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Workflows
+      operationId: getWorkflowsByUid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

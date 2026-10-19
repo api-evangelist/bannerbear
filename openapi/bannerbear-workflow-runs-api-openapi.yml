@@ -1,0 +1,391 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Workflow Runs API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Workflow Runs
+paths:
+  /workflow_runs:
+    get:
+      summary: List workflow runs
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        '200':
+          description: Paginated list of runs, newest first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - queued
+                      - running
+                      - completed
+                      - failed
+                    workflow:
+                      type: string
+                      description: UID of the workflow that was run
+                    progress:
+                      type: integer
+                      description: Percentage of steps completed. A failed run reports how far it got.
+                    inputs:
+                      type: object
+                      description: Inputs this run was started with
+                    outputs:
+                      type: object
+                      description: Every completed step's output, keyed by step name
+                    metadata:
+                      type: string
+                      nullable: true
+                      description: Arbitrary metadata string round-tripped from the create request
+                    steps:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                          type:
+                            type: string
+                            enum:
+                            - tool
+                            - image
+                            - animation
+                          status:
+                            type: string
+                            enum:
+                            - pending
+                            - running
+                            - completed
+                            - failed
+                            - skipped
+                          output:
+                            type: object
+                            description: Flattened result of this step, addressable by later steps as {{steps.<key>.<output>}}
+                          error:
+                            type: string
+                            description: Only present when this step failed
+                          resource:
+                            type: object
+                            description: The resource this step produced. Absent until the step has dispatched.
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - tool_job
+                                - image
+                                - animation
+                                description: Fetch from the matching endpoint — tool_job → /tool_jobs/{uid}
+                              uid:
+                                type: string
+                    error:
+                      type: string
+                      description: Only present when the run failed
+                    self:
+                      type: string
+                      format: uri
+                    created_at:
+                      type: string
+                      format: date-time
+                    completed_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+      tags:
+      - Workflow Runs
+      operationId: getWorkflowRuns
+      x-operation-id-source: derived
+    post:
+      summary: Run a workflow
+      description: 'Start a workflow. Async — returns 202 immediately; poll GET /workflow_runs/{uid} until `status` is `completed` or `failed`. Steps run in order, each feeding the next. A run charges nothing itself: each step is billed as the resource it creates, so a run costs exactly what running its steps individually would. To process many rows, POST once per row — each is its own run.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - workflow
+              properties:
+                workflow:
+                  type: string
+                  description: Workflow UID
+                inputs:
+                  type: object
+                  description: Values for the workflow's declared inputs. May also be sent as a bare top-level object instead of nested under `inputs`.
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the run
+      responses:
+        '202':
+          description: Run queued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - queued
+                    - running
+                    - completed
+                    - failed
+                  workflow:
+                    type: string
+                    description: UID of the workflow that was run
+                  progress:
+                    type: integer
+                    description: Percentage of steps completed. A failed run reports how far it got.
+                  inputs:
+                    type: object
+                    description: Inputs this run was started with
+                  outputs:
+                    type: object
+                    description: Every completed step's output, keyed by step name
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                          - tool
+                          - image
+                          - animation
+                        status:
+                          type: string
+                          enum:
+                          - pending
+                          - running
+                          - completed
+                          - failed
+                          - skipped
+                        output:
+                          type: object
+                          description: Flattened result of this step, addressable by later steps as {{steps.<key>.<output>}}
+                        error:
+                          type: string
+                          description: Only present when this step failed
+                        resource:
+                          type: object
+                          description: The resource this step produced. Absent until the step has dispatched.
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - tool_job
+                              - image
+                              - animation
+                              description: Fetch from the matching endpoint — tool_job → /tool_jobs/{uid}
+                            uid:
+                              type: string
+                  error:
+                    type: string
+                    description: Only present when the run failed
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+        '400':
+          description: Missing required parameter (workflow)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '403':
+          description: Workflow restricted to runs from its owner's API keys
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Workflow not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Missing a required input, or a url-typed input that is not a valid http(s) URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '423':
+          description: Workflow is locked from API runs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Workflow Runs
+      operationId: postWorkflowRuns
+      x-operation-id-source: derived
+  /workflow_runs/{uid}:
+    get:
+      summary: Get a workflow run
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Run details, live progress, and per-step results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - queued
+                    - running
+                    - completed
+                    - failed
+                  workflow:
+                    type: string
+                    description: UID of the workflow that was run
+                  progress:
+                    type: integer
+                    description: Percentage of steps completed. A failed run reports how far it got.
+                  inputs:
+                    type: object
+                    description: Inputs this run was started with
+                  outputs:
+                    type: object
+                    description: Every completed step's output, keyed by step name
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                          - tool
+                          - image
+                          - animation
+                        status:
+                          type: string
+                          enum:
+                          - pending
+                          - running
+                          - completed
+                          - failed
+                          - skipped
+                        output:
+                          type: object
+                          description: Flattened result of this step, addressable by later steps as {{steps.<key>.<output>}}
+                        error:
+                          type: string
+                          description: Only present when this step failed
+                        resource:
+                          type: object
+                          description: The resource this step produced. Absent until the step has dispatched.
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - tool_job
+                              - image
+                              - animation
+                              description: Fetch from the matching endpoint — tool_job → /tool_jobs/{uid}
+                            uid:
+                              type: string
+                  error:
+                    type: string
+                    description: Only present when the run failed
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+        '404':
+          description: Run not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Workflow Runs
+      operationId: getWorkflowRunsByUid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

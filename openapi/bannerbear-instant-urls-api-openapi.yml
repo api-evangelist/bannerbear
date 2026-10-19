@@ -1,0 +1,470 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Instant Urls API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Instant Urls
+paths:
+  /instant_urls:
+    get:
+      summary: List instant URLs
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        '200':
+          description: Paginated list of instant URLs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                    name:
+                      type: string
+                    template:
+                      type: string
+                      description: Source image template UID
+                    template_version:
+                      type: integer
+                      nullable: true
+                      description: Pinned template version, or null for latest
+                    mode:
+                      type: string
+                      enum:
+                      - encoded
+                      - named_params
+                    security:
+                      type: string
+                      enum:
+                      - signed
+                      - open
+                    status:
+                      type: string
+                      enum:
+                      - active
+                      - disabled
+                    scale:
+                      type: integer
+                      enum:
+                      - 1
+                      - 2
+                      - 3
+                      - 4
+                    rate_limit:
+                      type: boolean
+                      description: Whether per-IP rate limiting is enabled
+                    max_renders:
+                      type: integer
+                      nullable: true
+                    render_count:
+                      type: integer
+                    expires_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    base_url:
+                      type: string
+                      format: uri
+                    sample_url:
+                      type: string
+                      format: uri
+                    created_at:
+                      type: string
+                      format: date-time
+      tags:
+      - Instant Urls
+      operationId: getInstantUrls
+      x-operation-id-source: derived
+    post:
+      summary: Create an instant URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - template
+              properties:
+                name:
+                  type: string
+                template:
+                  type: string
+                  description: Image template UID this Instant URL is bound to
+                mode:
+                  type: string
+                  enum:
+                  - encoded
+                  - named_params
+                security:
+                  type: string
+                  enum:
+                  - signed
+                  - open
+                status:
+                  type: string
+                  enum:
+                  - active
+                  - disabled
+                scale:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                rate_limit:
+                  type: boolean
+                template_version:
+                  type: integer
+                  nullable: true
+                max_renders:
+                  type: integer
+                  nullable: true
+                expires_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+      responses:
+        '201':
+          description: Instant URL created. The signing_key field is only returned here — store it now.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  template:
+                    type: string
+                    description: Source image template UID
+                  template_version:
+                    type: integer
+                    nullable: true
+                    description: Pinned template version, or null for latest
+                  mode:
+                    type: string
+                    enum:
+                    - encoded
+                    - named_params
+                  security:
+                    type: string
+                    enum:
+                    - signed
+                    - open
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - disabled
+                  scale:
+                    type: integer
+                    enum:
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                  rate_limit:
+                    type: boolean
+                    description: Whether per-IP rate limiting is enabled
+                  max_renders:
+                    type: integer
+                    nullable: true
+                  render_count:
+                    type: integer
+                  expires_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  base_url:
+                    type: string
+                    format: uri
+                  sample_url:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  signing_key:
+                    type: string
+                    description: HMAC signing key. Only returned at creation time — store it now.
+        '402':
+          description: Trial cap hit — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Validation failure — e.g. missing name/template, invalid enum value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Instant Urls
+      operationId: postInstantUrls
+      x-operation-id-source: derived
+  /instant_urls/{uid}:
+    get:
+      summary: Get an instant URL
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Instant URL details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  template:
+                    type: string
+                    description: Source image template UID
+                  template_version:
+                    type: integer
+                    nullable: true
+                    description: Pinned template version, or null for latest
+                  mode:
+                    type: string
+                    enum:
+                    - encoded
+                    - named_params
+                  security:
+                    type: string
+                    enum:
+                    - signed
+                    - open
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - disabled
+                  scale:
+                    type: integer
+                    enum:
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                  rate_limit:
+                    type: boolean
+                    description: Whether per-IP rate limiting is enabled
+                  max_renders:
+                    type: integer
+                    nullable: true
+                  render_count:
+                    type: integer
+                  expires_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  base_url:
+                    type: string
+                    format: uri
+                  sample_url:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+      tags:
+      - Instant Urls
+      operationId: getInstantUrlsByUid
+      x-operation-id-source: derived
+    patch:
+      summary: Update an instant URL
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - template
+              properties:
+                name:
+                  type: string
+                template:
+                  type: string
+                  description: Image template UID this Instant URL is bound to
+                mode:
+                  type: string
+                  enum:
+                  - encoded
+                  - named_params
+                security:
+                  type: string
+                  enum:
+                  - signed
+                  - open
+                status:
+                  type: string
+                  enum:
+                  - active
+                  - disabled
+                scale:
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                rate_limit:
+                  type: boolean
+                template_version:
+                  type: integer
+                  nullable: true
+                max_renders:
+                  type: integer
+                  nullable: true
+                expires_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+      responses:
+        '200':
+          description: Updated instant URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  template:
+                    type: string
+                    description: Source image template UID
+                  template_version:
+                    type: integer
+                    nullable: true
+                    description: Pinned template version, or null for latest
+                  mode:
+                    type: string
+                    enum:
+                    - encoded
+                    - named_params
+                  security:
+                    type: string
+                    enum:
+                    - signed
+                    - open
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - disabled
+                  scale:
+                    type: integer
+                    enum:
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                  rate_limit:
+                    type: boolean
+                    description: Whether per-IP rate limiting is enabled
+                  max_renders:
+                    type: integer
+                    nullable: true
+                  render_count:
+                    type: integer
+                  expires_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  base_url:
+                    type: string
+                    format: uri
+                  sample_url:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+        '404':
+          description: Instant URL not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Instant Urls
+      operationId: patchInstantUrlsByUid
+      x-operation-id-source: derived
+    delete:
+      summary: Delete an instant URL
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Instant URL deleted
+      tags:
+      - Instant Urls
+      operationId: deleteInstantUrlsByUid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

@@ -1,0 +1,2800 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Tools API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Tools
+paths:
+  /tools/remove_bg:
+    post:
+      summary: Remove background
+      description: Cut the subject out of an image onto transparency. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  description: PNG or JPG source
+                  type: string
+                  format: uri
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - image_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - remove_bg
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      image_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsRemoveBg
+      x-operation-id-source: derived
+  /tools/generate_ai_image:
+    post:
+      summary: Generate AI image
+      description: Generate an image from a text prompt with AI. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  description: What to generate — describe the subject, style and composition
+                  type: string
+                model:
+                  description: Costs vary by model — see the credit cost shown for each
+                  type: string
+                  enum:
+                  - flux_schnell
+                  - flux_1_1_pro
+                  - nano_banana
+                  - gpt_image_2
+                  default: flux_schnell
+                aspect_ratio:
+                  description: Defaults to square
+                  type: string
+                  enum:
+                  - '1:1'
+                  - '16:9'
+                  - '9:16'
+                  - '4:3'
+                  - '3:4'
+                  default: '1:1'
+                reference_image_url:
+                  description: Optional starting point — only some models accept one
+                  type: string
+                  format: uri
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - prompt
+              - model
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - generate_ai_image
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      image_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsGenerateAiImage
+      x-operation-id-source: derived
+  /tools/generate_ai_video:
+    post:
+      summary: Generate AI video
+      description: Generate a video from a prompt or image with AI. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  description: What happens in the clip — describe the subject, motion, camera and style
+                  type: string
+                model:
+                  description: AI credit cost varies by model, length and resolution
+                  type: string
+                  enum:
+                  - seedance_1_lite
+                  - seedance_2
+                  - kling_2_5_turbo_pro
+                  - veo_3_1_fast
+                  default: seedance_1_lite
+                duration:
+                  description: Each model offers some of these lengths — Kling 5 or 10, Veo 4, 6 or 8, Seedance any
+                  type: string
+                  enum:
+                  - 4
+                  - 5
+                  - 6
+                  - 8
+                  - 10
+                  default: 5
+                resolution:
+                  description: Higher resolutions cost more per second — Kling's is fixed
+                  type: string
+                  enum:
+                  - 480p
+                  - 720p
+                  - 1080p
+                  default: 720p
+                aspect_ratio:
+                  description: Ignored when a starting image is given — the clip takes the image's shape
+                  type: string
+                  enum:
+                  - '16:9'
+                  - '9:16'
+                  - '1:1'
+                  - '4:3'
+                  - '3:4'
+                  default: '16:9'
+                image_url:
+                  description: Optional — the clip begins from this frame and animates it
+                  type: string
+                  format: uri
+                audio:
+                  description: Generated sound, on the models that can — Veo charges less without it
+                  type: string
+                  enum:
+                  - 'on'
+                  - 'off'
+                  default: 'on'
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - prompt
+              - model
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - generate_ai_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsGenerateAiVideo
+      x-operation-id-source: derived
+  /tools/video_thumbnails:
+    post:
+      summary: Video thumbnails
+      description: Grab still frames from a video at regular intervals. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                count:
+                  description: How many frames to grab, up to 10
+                  type: integer
+                  default: 3
+                interval:
+                  description: Seconds between frames — fractions are fine, 0.5 for two a second
+                  type: number
+                  default: 1
+                start:
+                  description: Where the first frame is taken
+                  type: number
+                  default: 0
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - video_thumbnails
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      image_url:
+                        type: string
+                        format: uri
+                      image_urls:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsVideoThumbnails
+      x-operation-id-source: derived
+  /tools/subtitle_video:
+    post:
+      summary: Transcribe and burn subtitles
+      description: Auto-transcribe the audio and burn styled subtitles onto the video. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                language:
+                  description: Auto detect works well when the audio is clear
+                  type: string
+                  enum:
+                  - ''
+                  - en
+                  - es
+                  - fr
+                  - de
+                  - it
+                  - pt
+                  - nl
+                  - ru
+                  - pl
+                  - tr
+                  - ar
+                  - hi
+                  - zh
+                  - ja
+                  - ko
+                  - id
+                  - vi
+                  - th
+                words_per_segment:
+                  description: Words on screen at once
+                  type: integer
+                  enum:
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  - 5
+                  - 6
+                  - 7
+                  - 8
+                  - 9
+                  - 10
+                  nullable: true
+                font:
+                  description: Defaults to Inter
+                  type: string
+                  enum:
+                  - inter
+                  - roboto
+                  - open-sans
+                  - noto-sans
+                  - montserrat
+                  - poppins
+                  - bebas-neue
+                  - anton
+                  - oswald
+                  - playfair-display
+                  default: inter
+                font_size:
+                  description: Defaults to 28
+                  type: integer
+                color:
+                  description: Defaults to white
+                  type: string
+                  default: '#ffffff'
+                bold:
+                  description: Bold
+                  type: string
+                  enum:
+                  - 'off'
+                  - 'on'
+                italic:
+                  description: Italic
+                  type: string
+                  enum:
+                  - 'off'
+                  - 'on'
+                alignment:
+                  description: Defaults to Bottom Center
+                  type: string
+                  enum:
+                  - '2'
+                  - '1'
+                  - '3'
+                  - '5'
+                  - '4'
+                  - '6'
+                  - '8'
+                  - '7'
+                  - '9'
+                outline_width:
+                  description: Text outline width or box padding
+                  type: integer
+                  default: 0
+                outline_color:
+                  description: Defaults to black
+                  type: string
+                  default: '#000000'
+                shadow_size:
+                  description: Hard drop shadow, offset down-right
+                  type: integer
+                  default: 0
+                shadow_color:
+                  description: Defaults to black
+                  type: string
+                  default: '#000000'
+                background_style:
+                  description: Solid box puts an opaque panel behind the text
+                  type: string
+                  enum:
+                  - none
+                  - box
+                  default: none
+                background_color:
+                  description: The colour of the box behind the text
+                  type: string
+                background_opacity:
+                  description: 0 is fully transparent, 100 fully opaque
+                  type: integer
+                  default: 100
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - subtitle_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsSubtitleVideo
+      x-operation-id-source: derived
+  /tools/generate_voiceover:
+    post:
+      summary: Generate voiceover
+      description: Turn text into spoken audio using a natural-sounding TTS voice. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  description: What the voice should say — up to 2000 characters
+                  type: string
+                voice:
+                  description: Pre-made ElevenLabs voice. Rachel and Adam are safe defaults
+                  type: string
+                  enum:
+                  - rachel
+                  - adam
+                  - antoni
+                  - bella
+                  - domi
+                  - elli
+                  - josh
+                  - arnold
+                  - charlie
+                  - freya
+                  default: rachel
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - text
+              - voice
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - generate_voiceover
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      audio_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsGenerateVoiceover
+      x-operation-id-source: derived
+  /tools/create_pdf:
+    post:
+      summary: Create multi-page PDF
+      description: Stitch JPGs, PNGs and PDFs into one multi-page PDF. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                urls:
+                  description: One URL per line — JPG, PNG, or PDF. Upload adds them here. Order is preserved.
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - urls
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - create_pdf
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      pdf_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsCreatePdf
+      x-operation-id-source: derived
+  /tools/flatten_pdf:
+    post:
+      summary: Flatten PDF for print
+      description: Flatten transparency and form fields, and embed fonts for print. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pdf_url:
+                  description: PDF URL
+                  type: string
+                  format: uri
+                color:
+                  description: Convert to CMYK if your printer asks for it
+                  type: string
+                  enum:
+                  - original
+                  - cmyk
+                  default: original
+                text:
+                  description: Outlines remove any font dependency but the text can no longer be selected
+                  type: string
+                  enum:
+                  - embed
+                  - outline
+                  default: embed
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - pdf_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - flatten_pdf
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      pdf_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsFlattenPdf
+      x-operation-id-source: derived
+  /tools/pdf_to_image:
+    post:
+      summary: PDF to image
+      description: Turn PDF pages into JPG or PNG images. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pdf_url:
+                  description: PDF URL
+                  type: string
+                  format: uri
+                format:
+                  description: Format
+                  type: string
+                  enum:
+                  - png
+                  - jpg
+                  default: png
+                dpi:
+                  description: 72 to 300. 300 suits print, 72 to 150 suits screens
+                  type: integer
+                  default: 150
+                pages:
+                  description: All pages makes one image per page, up to 20
+                  type: string
+                  enum:
+                  - first
+                  - all
+                  default: first
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - pdf_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - pdf_to_image
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      image_url:
+                        type: string
+                        format: uri
+                      image_urls:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsPdfToImage
+      x-operation-id-source: derived
+  /tools/trim_video:
+    post:
+      summary: Trim video
+      description: Keep a slice of a video between two times. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                start:
+                  description: Start (seconds)
+                  type: number
+                end:
+                  description: End (seconds)
+                  type: number
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - start
+              - end
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - trim_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsTrimVideo
+      x-operation-id-source: derived
+  /tools/concat_videos:
+    post:
+      summary: Join videos
+      description: Join two or more videos end-to-end into a single file. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_urls:
+                  description: Two or more URLs in play order
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                transition:
+                  description: How each clip flows into the next. Defaults to none
+                  type: string
+                  enum:
+                  - none
+                  - fade
+                  - dissolve
+                  - wipeleft
+                  - slideleft
+                transition_duration:
+                  description: Only used when transition is set. Defaults to 1
+                  type: number
+                width:
+                  description: Defaults to the first video's width, capped at 1920 on the long edge
+                  type: integer
+                height:
+                  description: Defaults to the first video's height, capped at 1080 on the short edge
+                  type: integer
+                fps:
+                  description: Defaults to the highest frame rate among the inputs, capped at 60
+                  type: integer
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_urls
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - concat_videos
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsConcatVideos
+      x-operation-id-source: derived
+  /tools/resize_video:
+    post:
+      summary: Resize video
+      description: Rescale a video to target dimensions, cover-crop or contain-letterbox. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                width:
+                  description: Width
+                  type: integer
+                height:
+                  description: Height
+                  type: integer
+                fit:
+                  description: cover crops, contain letterboxes, blur fills the bars with a blurred copy
+                  type: string
+                  enum:
+                  - cover
+                  - contain
+                  - blur
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - width
+              - height
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - resize_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsResizeVideo
+      x-operation-id-source: derived
+  /tools/crop_video:
+    post:
+      summary: Crop video
+      description: Crop a video to an explicit rectangle in pixels. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                x:
+                  description: X (px)
+                  type: integer
+                y:
+                  description: Y (px)
+                  type: integer
+                width:
+                  description: Width (px)
+                  type: integer
+                height:
+                  description: Height (px)
+                  type: integer
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - x
+              - y
+              - width
+              - height
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - crop_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsCropVideo
+      x-operation-id-source: derived
+  /tools/overlay_video:
+    post:
+      summary: Overlay video
+      description: Layer one video on top of another as picture-in-picture. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                base_video_url:
+                  description: Base video URL
+                  type: string
+                  format: uri
+                overlay_video_url:
+                  description: Overlay video URL
+                  type: string
+                  format: uri
+                position:
+                  description: Snap to a corner or edge. Use this or x/y, not both
+                  type: string
+                  enum:
+                  - top_left
+                  - top_center
+                  - top_right
+                  - center
+                  - bottom_left
+                  - bottom_center
+                  - bottom_right
+                margin:
+                  description: Gap from the edge when using position. Defaults to 0
+                  type: integer
+                x:
+                  description: Absolute position from the left. Ignored when position is set
+                  type: integer
+                y:
+                  description: Absolute position from the top. Ignored when position is set
+                  type: integer
+                scale:
+                  description: 1.0 = original size. Use this or width, not both
+                  type: number
+                width:
+                  description: Exact size — the height follows the overlay's own proportions. For a circle this is the bubble's diameter
+                  type: integer
+                shape:
+                  description: Circle crops the overlay to a centred bubble
+                  type: string
+                  enum:
+                  - rectangle
+                  - circle
+                  default: rectangle
+                border_width:
+                  description: 0 for no border
+                  type: integer
+                border_color:
+                  description: Border color
+                  type: string
+                  default: '#ffffff'
+                shadow:
+                  description: Drop shadow
+                  type: string
+                  enum:
+                  - 'off'
+                  - 'on'
+                  default: 'off'
+                audio:
+                  description: Overlay and mixed audio need the overlay to have a soundtrack
+                  type: string
+                  enum:
+                  - base
+                  - overlay
+                  - mix
+                  default: base
+                start:
+                  description: When the overlay begins
+                  type: number
+                when_finished:
+                  description: When the overlay ends
+                  type: string
+                  enum:
+                  - freeze
+                  - hide
+                  - loop
+                  default: freeze
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - base_video_url
+              - overlay_video_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - overlay_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsOverlayVideo
+      x-operation-id-source: derived
+  /tools/overlay_image:
+    post:
+      summary: Add image overlay
+      description: Burn a logo, watermark, or badge onto a video. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                image_url:
+                  description: Overlay image URL
+                  type: string
+                  format: uri
+                position:
+                  description: Snap to a corner or edge. Use this or x/y, not both
+                  type: string
+                  enum:
+                  - top_left
+                  - top_center
+                  - top_right
+                  - center
+                  - bottom_left
+                  - bottom_center
+                  - bottom_right
+                margin:
+                  description: Gap from the edge when using position. Defaults to 0
+                  type: integer
+                x:
+                  description: Absolute position from the left. Ignored when position is set
+                  type: integer
+                y:
+                  description: Absolute position from the top. Ignored when position is set
+                  type: integer
+                opacity:
+                  description: 0.0 to 1.0
+                  type: number
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - image_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - overlay_image
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsOverlayImage
+      x-operation-id-source: derived
+  /tools/add_audio:
+    post:
+      summary: Add or replace audio
+      description: Mix an audio track over a video, or replace it. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                audio_url:
+                  description: Audio URL
+                  type: string
+                  format: uri
+                mode:
+                  description: Mode
+                  type: string
+                  enum:
+                  - mix
+                  - replace
+                  default: mix
+                volume:
+                  description: 1.0 = original level
+                  type: number
+                  default: 1.0
+                loop:
+                  description: Loop the audio to match the video's length. Turn off for one-shot sounds
+                  type: string
+                  enum:
+                  - 'on'
+                  - 'off'
+                  default: 'on'
+                ducking:
+                  description: Dip the new audio when the video's original audio is present. Mix mode only
+                  type: string
+                  enum:
+                  - 'off'
+                  - subtle
+                  - medium
+                  - heavy
+                  default: 'off'
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - audio_url
+              - mode
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - add_audio
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsAddAudio
+      x-operation-id-source: derived
+  /tools/add_cover_art:
+    post:
+      summary: Add cover art to video
+      description: Embed a still image as the video's poster thumbnail. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                image_url:
+                  description: Cover image URL
+                  type: string
+                  format: uri
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - image_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - add_cover_art
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsAddCoverArt
+      x-operation-id-source: derived
+  /tools/create_video_slideshow:
+    post:
+      summary: Create video slideshow
+      description: Turn images into an mp4 slideshow with optional transitions. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_urls:
+                  description: Two or more URLs in slide order
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                slide_duration:
+                  description: Defaults to 3
+                  type: number
+                transition:
+                  description: How each slide flows into the next. Defaults to none
+                  type: string
+                  enum:
+                  - none
+                  - fade
+                  - dissolve
+                  - wipeleft
+                  - slideleft
+                transition_duration:
+                  description: Only used when transition is set. Defaults to 1
+                  type: number
+                width:
+                  description: Defaults to 1280
+                  type: integer
+                height:
+                  description: Defaults to 720
+                  type: integer
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - image_urls
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - create_video_slideshow
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsCreateVideoSlideshow
+      x-operation-id-source: derived
+  /tools/apply_color_filter:
+    post:
+      summary: Apply colour filter
+      description: Apply a named colour-grade preset to a video (Instagram-style filters). Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                filter:
+                  description: Choose a preset colour grade
+                  type: string
+                  enum:
+                  - black-and-white
+                  - sepia
+                  - invert
+                  - warm
+                  - cool
+                  - vivid
+                  - muted
+                  - dark-and-moody
+                  - faded
+                  - vintage
+                  - cross-process
+                  - teal-and-orange
+                  - bleach-bypass
+                  default: vintage
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - filter
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - apply_color_filter
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsApplyColorFilter
+      x-operation-id-source: derived
+  /tools/soften_video:
+    post:
+      summary: Soften video
+      description: Smooth skin and flat surfaces while keeping edges sharp. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                strength:
+                  description: How much smoothing to apply
+                  type: string
+                  enum:
+                  - subtle
+                  - medium
+                  - strong
+                  default: medium
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+              - strength
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - soften_video
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      video_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsSoftenVideo
+      x-operation-id-source: derived
+  /tools/create_gif_preview:
+    post:
+      summary: Create GIF preview
+      description: Turn a video into an animated GIF preview. Async — returns 202 with a pending job; poll GET /tool_jobs/{uid} until `status` is `completed` or `failed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  description: Video URL
+                  type: string
+                  format: uri
+                fps:
+                  description: Frames per second, up to 8. Defaults to 8
+                  type: integer
+                width:
+                  description: Up to 480. Height follows the source's aspect ratio
+                  type: integer
+                duration:
+                  description: Trim to this many seconds from the start, up to 5. Defaults to 5
+                  type: number
+                metadata:
+                  type: string
+                  description: Arbitrary metadata string stored with the tool run
+              required:
+              - video_url
+      responses:
+        '202':
+          description: Tool run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  tool:
+                    type: string
+                    enum:
+                    - create_gif_preview
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - running
+                    - completed
+                    - failed
+                    description: pending → running → completed / failed
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: 0-100 job progress, 100 once completed
+                  inputs:
+                    type: object
+                    description: Inputs the job was created with
+                  outputs:
+                    type: object
+                    properties:
+                      image_url:
+                        type: string
+                        format: uri
+                  metadata:
+                    type: string
+                    nullable: true
+                    description: Arbitrary metadata string round-tripped from the create request
+                  self:
+                    type: string
+                    format: uri
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  error_message:
+                    type: string
+                    nullable: true
+                    description: Human-readable failure reason (only present on failed jobs)
+        '402':
+          description: API quota exhausted — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '404':
+          description: Unknown tool
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Input validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Tools
+      operationId: postToolsCreateGifPreview
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

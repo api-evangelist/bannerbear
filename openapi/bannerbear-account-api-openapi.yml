@@ -1,0 +1,106 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Account API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Account
+paths:
+  /account:
+    get:
+      summary: Get account info
+      responses:
+        '200':
+          description: Account details for the authenticated workspace and API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                    description: Workspace UID
+                  workspace:
+                    type: string
+                    description: Workspace name
+                  plan:
+                    type: string
+                    description: Subscription plan
+                  quota:
+                    type: object
+                    description: API credits — renders, encodes and other first-party work
+                    properties:
+                      max:
+                        type: integer
+                      current:
+                        type: integer
+                      remaining:
+                        type: integer
+                  ai_quota:
+                    type: object
+                    description: 'AI credits — a separate pool covering model calls (background removal, AI image models, transcription, voiceover). Priced identically on every plan. May be fractional: one background removal is 1 credit, an AI detect is 0.1.'
+                    properties:
+                      max:
+                        type: integer
+                      current:
+                        type: number
+                      remaining:
+                        type: number
+                  api_key:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: API key name / identifier
+                      scopes:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                          - images:read
+                          - images:write
+                          - image_templates:read
+                          - image_templates:write
+                          - animations:read
+                          - animations:write
+                          - animation_templates:read
+                          - animation_templates:write
+                          - batches:read
+                          - batches:write
+                          - webhooks:read
+                          - webhooks:write
+                          - instant_urls:read
+                          - instant_urls:write
+                          - publications:read
+                          - publications:write
+                          - assets:read
+                          - assets:write
+                          - tools:read
+                          - tools:write
+                          - workflows:read
+                          - workflows:write
+                        description: Endpoints this key is authorized for (e.g. `images:write`). Empty array means full access — no scope restrictions.
+                      allowed_origins:
+                        type: array
+                        items:
+                          type: string
+                        description: Origins allowed to use this key from a browser (e.g. `https://mysite.com`). Empty array = no origin restriction.
+                  created_at:
+                    type: string
+                    format: date-time
+      tags:
+      - Account
+      operationId: getAccount
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

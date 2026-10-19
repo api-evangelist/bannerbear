@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Assets API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Assets
+paths:
+  /assets:
+    get:
+      summary: List assets
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Paginated list of assets uploaded by this workspace
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                    url:
+                      type: string
+                      format: uri
+                      description: CDN URL of the uploaded asset
+                    mime_type:
+                      type: string
+                      nullable: true
+                      description: Content-Type of the stored asset
+                    size:
+                      type: integer
+                      description: File size in bytes
+                    created_at:
+                      type: string
+                      format: date-time
+      tags:
+      - Assets
+      operationId: getAssets
+      x-operation-id-source: derived
+    post:
+      summary: Upload an asset
+      description: 'Upload a file (max 5MB) to storage and get back a durable CDN URL. Send the raw file bytes as the request body with `Content-Type` set to one of the accepted mime types listed below.
+
+
+        Uploads are deduplicated per workspace by SHA-256 of the payload — pushing the same bytes twice returns the existing record (`200 OK`) rather than creating a duplicate. A fresh upload returns `201 Created`.
+
+
+        Trial accounts are limited to 20 uploaded assets. Dedupe hits don''t count against the cap.'
+      requestBody:
+        required: true
+        content:
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+          image/png:
+            schema:
+              type: string
+              format: binary
+          image/webp:
+            schema:
+              type: string
+              format: binary
+          image/gif:
+            schema:
+              type: string
+              format: binary
+          image/svg+xml:
+            schema:
+              type: string
+              format: binary
+          video/mp4:
+            schema:
+              type: string
+              format: binary
+          video/webm:
+            schema:
+              type: string
+              format: binary
+          video/quicktime:
+            schema:
+              type: string
+              format: binary
+          audio/mpeg:
+            schema:
+              type: string
+              format: binary
+          audio/wav:
+            schema:
+              type: string
+              format: binary
+          audio/mp4:
+            schema:
+              type: string
+              format: binary
+          audio/webm:
+            schema:
+              type: string
+              format: binary
+          audio/ogg:
+            schema:
+              type: string
+              format: binary
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+          application/json:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Asset already existed (matched by content hash) — existing record returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                    description: CDN URL of the uploaded asset
+                  mime_type:
+                    type: string
+                    nullable: true
+                    description: Content-Type of the stored asset
+                  size:
+                    type: integer
+                    description: File size in bytes
+                  created_at:
+                    type: string
+                    format: date-time
+        '201':
+          description: Asset uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                    description: CDN URL of the uploaded asset
+                  mime_type:
+                    type: string
+                    nullable: true
+                    description: Content-Type of the stored asset
+                  size:
+                    type: integer
+                    description: File size in bytes
+                  created_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Empty request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '402':
+          description: Trial cap hit — upgrade required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '413':
+          description: Asset exceeds the size cap
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '415':
+          description: Unsupported Content-Type — see requestBody for the accepted list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '502':
+          description: Upstream storage upload failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Assets
+      operationId: postAssets
+      x-operation-id-source: derived
+  /assets/{uid}:
+    get:
+      summary: Get an asset
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Asset details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                    description: CDN URL of the uploaded asset
+                  mime_type:
+                    type: string
+                    nullable: true
+                    description: Content-Type of the stored asset
+                  size:
+                    type: integer
+                    description: File size in bytes
+                  created_at:
+                    type: string
+                    format: date-time
+        '404':
+          description: Asset not found in this workspace
+      tags:
+      - Assets
+      operationId: getAssetsByUid
+      x-operation-id-source: derived
+  /assets/check:
+    post:
+      summary: Batch-check which asset hashes already exist
+      description: 'Given a list of SHA-256 content hashes, returns a map of each hash to its existing asset record (or `null` if not stored in this workspace). Lets syncing clients skip the upload round-trip for content that''s already been uploaded — compute the hash locally, batch-check, then only POST the missing ones to `/assets`.
+
+
+        Max 100 hashes per request.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - content_hashes
+              properties:
+                content_hashes:
+                  type: array
+                  maxItems: 100
+                  items:
+                    type: string
+                    description: SHA-256 hex digest of the file contents
+      responses:
+        '200':
+          description: Map of `hash → asset record or null`. Keys are the hashes from the request; values are the existing asset for that hash, or null if not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  oneOf:
+                  - type: object
+                    properties:
+                      uid:
+                        type: string
+                      url:
+                        type: string
+                        format: uri
+                        description: CDN URL of the uploaded asset
+                      mime_type:
+                        type: string
+                        nullable: true
+                        description: Content-Type of the stored asset
+                      size:
+                        type: integer
+                        description: File size in bytes
+                      created_at:
+                        type: string
+                        format: date-time
+                  - type: 'null'
+        '400':
+          description: Empty or oversized content_hashes array
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Assets
+      operationId: postAssetsCheck
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

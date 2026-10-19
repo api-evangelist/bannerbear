@@ -1,0 +1,3577 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Publications API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Publications
+paths:
+  /publications:
+    get:
+      summary: Browse the public library
+      description: Returns publications with `visibility=public_library` from every team, which is the same set the dashboard's template library shows. Legacy V3 publications are included and their `uid` carries a `v3_` prefix; they install as V5 image templates, converted on the way in. Publications are user-owned resources that span workspaces, so there's no workspace-scoped listing — if you need your own publication UIDs, grab them from the dashboard at publish time and hit `/publications/{uid}` or `/publications/{uid}/install` directly.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: kind
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - image
+          - animation
+          - workflow
+        description: Only publications of this kind. Omit for all of them.
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - announcements & news
+          - beauty & fashion
+          - business & finance
+          - education & coaching
+          - employee highlights
+          - events & weddings
+          - film & movies
+          - food & drinks
+          - gaming & e-sports
+          - home & real estate
+          - marketing & sales
+          - motivational quotes
+          - podcasts & publishing
+          - product showcase
+          - reviews & testimonials
+          - social media
+          - tech & crypto
+          - travel & nature
+        description: Only publications in this category, matched against their tags. Comma-separate to match any of several.
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Only publications whose name contains this text, case-insensitive.
+      responses:
+        '200':
+          description: Paginated list of public library publications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                      description: A `v3_` prefix marks a legacy V3 publication. Pass the uid back verbatim, prefix included.
+                    name:
+                      type: string
+                    description:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    categories:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - announcements & news
+                        - beauty & fashion
+                        - business & finance
+                        - education & coaching
+                        - employee highlights
+                        - events & weddings
+                        - film & movies
+                        - food & drinks
+                        - gaming & e-sports
+                        - home & real estate
+                        - marketing & sales
+                        - motivational quotes
+                        - podcasts & publishing
+                        - product showcase
+                        - reviews & testimonials
+                        - social media
+                        - tech & crypto
+                        - travel & nature
+                      description: Library categories this publication falls into, derived from its tags. These are the values the index endpoint's `category` filter takes.
+                    visibility:
+                      type: string
+                      enum:
+                      - unpublished
+                      - published
+                      - public_library
+                      description: unpublished, published, or public_library
+                    preview:
+                      type: string
+                      nullable: true
+                      format: uri
+                      description: Preview image or gif URL
+                    install_count:
+                      type: integer
+                      description: Number of times this publication has been installed into a workspace
+                    template_kind:
+                      type: string
+                      enum:
+                      - image
+                      - animation
+                      - workflow
+                      description: Which kind of template this publication creates when installed
+                    width:
+                      type: integer
+                      nullable: true
+                      description: Canvas width in pixels. Null for a workflow, which has no canvas of its own.
+                    height:
+                      type: integer
+                      nullable: true
+                      description: Canvas height in pixels. Null for a workflow, which has no canvas of its own.
+                    published_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    created_at:
+                      type: string
+                      format: date-time
+      tags:
+      - Publications
+      operationId: getPublications
+      x-operation-id-source: derived
+  /publications/{uid}:
+    get:
+      summary: Get a publication
+      description: Public library publications are visible to any authenticated caller, including legacy V3 ones, whose uid carries a `v3_` prefix — a bare V3 uid resolves too. Published publications are only returned to the user who created them.
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Publication details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                    description: A `v3_` prefix marks a legacy V3 publication. Pass the uid back verbatim, prefix included.
+                  name:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  categories:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - announcements & news
+                      - beauty & fashion
+                      - business & finance
+                      - education & coaching
+                      - employee highlights
+                      - events & weddings
+                      - film & movies
+                      - food & drinks
+                      - gaming & e-sports
+                      - home & real estate
+                      - marketing & sales
+                      - motivational quotes
+                      - podcasts & publishing
+                      - product showcase
+                      - reviews & testimonials
+                      - social media
+                      - tech & crypto
+                      - travel & nature
+                    description: Library categories this publication falls into, derived from its tags. These are the values the index endpoint's `category` filter takes.
+                  visibility:
+                    type: string
+                    enum:
+                    - unpublished
+                    - published
+                    - public_library
+                    description: unpublished, published, or public_library
+                  preview:
+                    type: string
+                    nullable: true
+                    format: uri
+                    description: Preview image or gif URL
+                  install_count:
+                    type: integer
+                    description: Number of times this publication has been installed into a workspace
+                  template_kind:
+                    type: string
+                    enum:
+                    - image
+                    - animation
+                    - workflow
+                    description: Which kind of template this publication creates when installed
+                  width:
+                    type: integer
+                    nullable: true
+                    description: Canvas width in pixels. Null for a workflow, which has no canvas of its own.
+                  height:
+                    type: integer
+                    nullable: true
+                    description: Canvas height in pixels. Null for a workflow, which has no canvas of its own.
+                  published_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  created_at:
+                    type: string
+                    format: date-time
+        '404':
+          description: Publication not found or not accessible to this key
+      tags:
+      - Publications
+      operationId: getPublicationsByUid
+      x-operation-id-source: derived
+  /publications/{uid}/install:
+    post:
+      summary: Install a publication into the workspace
+      description: Clones the publication's snapshot into the API key's team. What it creates depends on the publication's `template_kind` — an image template, an animation template, or a workflow and the templates its steps use. A legacy V3 publication (uid prefixed `v3_`) is converted into a V5 image template on the way in. Returns the newly created resource. Trial accounts are capped at 3 templates per kind — installing beyond the cap returns 402.
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Installed. The response shape matches the resource that was created, so it follows the publication's `template_kind`.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  description: Image template. `config.objects` is the full canvas config — matches exactly the shape PATCH accepts, so responses round-trip cleanly.
+                  properties:
+                    uid:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    width:
+                      type: integer
+                    height:
+                      type: integer
+                    responsive:
+                      type: boolean
+                      description: True if the template has responsive sizing or positioning
+                    preview:
+                      type: string
+                      nullable: true
+                      format: uri
+                      description: Preview image URL
+                    ui_write_access:
+                      type: string
+                      enum:
+                      - owner_only
+                      - team
+                      description: Who can edit this template in the dashboard — `owner_only` (default) or `team`
+                    api_write_access:
+                      type: string
+                      enum:
+                      - team
+                      - owner_only
+                      - nobody
+                      description: Who can update or delete this template via the API — `team` (default, any workspace API key), `owner_only` (only API keys owned by the template's creator), or `nobody` (locked; unlock via dashboard)
+                    config:
+                      type: object
+                      description: Full canvas configuration.
+                      properties:
+                        objects:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Layer'
+                          description: Layers on the canvas
+                    created_at:
+                      type: string
+                      format: date-time
+                - type: object
+                  properties:
+                    uid:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    width:
+                      type: integer
+                    height:
+                      type: integer
+                    frame_rate:
+                      type: integer
+                      enum:
+                      - 24
+                      - 30
+                      - 60
+                    duration_seconds:
+                      type: number
+                      description: Derived from the template's keyframes — not settable. 0 until something is animated.
+                    preview:
+                      type: string
+                      nullable: true
+                      format: uri
+                      description: Preview image URL
+                    ui_write_access:
+                      type: string
+                      enum:
+                      - owner_only
+                      - team
+                      description: Who can edit in the dashboard — `owner_only` (default) or `team`
+                    api_write_access:
+                      type: string
+                      enum:
+                      - team
+                      - owner_only
+                      - nobody
+                      description: Who can update or delete via the API — `team` (default), `owner_only`, or `nobody` (locked; unlock via dashboard)
+                    config:
+                      type: object
+                      description: Canvas configuration. `objects` are the layers; `keyframes` drives the animation and determines duration.
+                      properties:
+                        objects:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Layer'
+                        keyframes:
+                          $ref: '#/components/schemas/Keyframes'
+                    created_at:
+                      type: string
+                      format: date-time
+                - type: object
+                  properties:
+                    uid:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    inputs:
+                      type: object
+                      description: Inputs this workflow accepts, keyed by name. Each value is { type, required }. `url`-typed inputs are validated as http(s) URLs when a run is created.
+                      additionalProperties:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - string
+                            - url
+                            - number
+                            - boolean
+                          required:
+                            type: boolean
+                    steps:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            description: Stable handle for this step; later steps reference it as {{steps.<key>.<output>}}
+                          type:
+                            type: string
+                            enum:
+                            - tool
+                            - image
+                            - animation
+                            description: What kind of operation this step performs
+                          ref:
+                            type: string
+                            description: Tool slug, or template UID for image / animation steps
+                          label:
+                            type: string
+                            description: Human name of the step's target — the tool's label or the template's name
+                          inputs:
+                            type: object
+                            description: Step payload, with {{inputs.x}} / {{steps.x.y}} references unresolved
+                      description: Steps in run order
+                    ui_write_access:
+                      type: string
+                      enum:
+                      - owner_only
+                      - team
+                    api_write_access:
+                      type: string
+                      enum:
+                      - team
+                      - owner_only
+                      - nobody
+                      description: Who may run this workflow via the API
+                    created_at:
+                      type: string
+                      format: date-time
+        '402':
+          description: Trial cap hit — upgrade required
+        '403':
+          description: Publication is unpublished and cannot be installed
+        '404':
+          description: Publication not found
+      tags:
+      - Publications
+      operationId: postPublicationsByUidInstall
+      x-operation-id-source: derived
+components:
+  schemas:
+    LayerCircle:
+      type: object
+      description: A `circle` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - circle
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        aspect-ratio-locked:
+          description: aspect-ratio-locked
+          type: boolean
+        background-color:
+          description: Background color of the container
+          type: string
+        background-color-gradient:
+          description: Second color for a two-color gradient fill
+          type: string
+        background-gradient:
+          description: 'Full CSS gradient for the fill, e.g. linear-gradient(135deg, #f00 0%, #00f 60%, transparent 100%) — any number of stops at any angle, and radial-gradient or conic-gradient are accepted. Takes priority over background-color-gradient and is drawn on top of background-color'
+          type: string
+        background-gradient-direction:
+          description: Direction of the gradient fill
+          type: string
+          enum:
+          - left
+          - right
+          - top
+          - bottom
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: responsive-aspect-ratio
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerText:
+      type: object
+      description: A `text` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - text
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        align-items:
+          description: Vertical text alignment within the container
+          type: string
+          enum:
+          - start
+          - center
+          - end
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: background-color
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        color:
+          description: color
+          type: string
+        color-secondary:
+          description: Text color for text wrapped in *asterisks*
+          type: string
+        direction:
+          description: direction
+          type: string
+          enum:
+          - ltr
+          - rtl
+        font-family:
+          description: Font family name (Google Fonts or custom font)
+          type: string
+        font-family-secondary:
+          description: Font family for text wrapped in *asterisks*
+          type: string
+        font-size:
+          description: font-size
+          type: number
+        font-style:
+          description: font-style
+          type: string
+          enum:
+          - normal
+          - italic
+        font-style-secondary:
+          description: Font style for text wrapped in *asterisks*
+          type: string
+          nullable: true
+          enum:
+          - normal
+          - italic
+        font-weight:
+          description: font-weight
+          type: number
+          enum:
+          - 100
+          - 200
+          - 300
+          - 400
+          - 500
+          - 600
+          - 700
+          - 800
+          - 900
+        font-weight-secondary:
+          description: Font weight for text wrapped in *asterisks*
+          type: number
+          nullable: true
+          enum:
+          - 100
+          - 200
+          - 300
+          - 400
+          - 500
+          - 600
+          - 700
+          - 800
+          - 900
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        letter-spacing:
+          description: letter-spacing
+          type: number
+        line-height:
+          description: Line height multiplier for text spacing
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        skewX:
+          description: Horizontal skew angle in degrees
+          type: number
+        skewY:
+          description: Vertical skew angle in degrees
+          type: number
+        text:
+          description: Text content to display
+          type: string
+        text-align:
+          description: Horizontal text alignment
+          type: string
+          enum:
+          - left
+          - center
+          - right
+          - justify
+          - start
+          - end
+        text-background-image-mask:
+          description: Image URL to use as a clipping mask for the text fill
+          type: string
+        text-decoration:
+          description: text-decoration
+          type: string
+          enum:
+          - none
+          - underline
+          - overline
+        text-decoration-secondary:
+          description: Text decoration for text wrapped in *asterisks*
+          type: string
+          nullable: true
+          enum:
+          - none
+          - underline
+          - line-through
+        text-ellipsis:
+          description: Truncate overflowing text with an ellipsis
+          type: boolean
+        text-fit:
+          description: How text is sized to fit its container
+          type: string
+          enum:
+          - 'off'
+          - auto_fit
+          - resize_overflow
+        text-highlight-border-radius:
+          description: Corner radius of the text highlight in pixels
+          type: number
+        text-highlight-color:
+          description: Background color behind individual lines of text
+          type: string
+        text-highlight-padding-horizontal:
+          description: Horizontal padding around text highlight in pixels
+          type: number
+        text-highlight-padding-vertical:
+          description: Vertical padding around text highlight in pixels
+          type: number
+        text-highlight-shadow:
+          description: 'CSS box-shadow applied to the text highlight, e.g. 0px 2px 4px #000'
+          type: string
+        text-shadow:
+          description: text-shadow
+          type: string
+        text-stroke-color:
+          description: Color of the text outline stroke
+          type: string
+        text-stroke-width:
+          description: Width of the text outline stroke in pixels
+          type: number
+        text-transform:
+          description: text-transform
+          type: string
+          enum:
+          - none
+          - uppercase
+          - lowercase
+          - capitalize
+        text-transform-secondary:
+          description: Text transform for text wrapped in *asterisks*
+          type: string
+          nullable: true
+          enum:
+          - none
+          - uppercase
+          - lowercase
+          - capitalize
+        top:
+          description: top
+          type: number
+        white-space:
+          description: How whitespace and line breaks are handled
+          type: string
+          enum:
+          - normal
+          - nowrap
+          - pre
+          - pre-wrap
+          - pre-line
+        width:
+          description: width
+          type: number
+        word-break:
+          description: word-break
+          type: string
+          enum:
+          - normal
+          - break-all
+          - keep-all
+          - break-word
+    LayerImage:
+      type: object
+      description: A `image` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - image
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        aspect-ratio-locked:
+          description: aspect-ratio-locked
+          type: boolean
+        background-blend-mode:
+          description: Blend mode applied to the image
+          type: string
+          enum:
+          - normal
+          - multiply
+          - screen
+          - overlay
+          - darken
+          - lighten
+          - color-dodge
+          - color-burn
+          - hard-light
+          - soft-light
+          - difference
+          - exclusion
+          - hue
+          - saturation
+          - color
+          - luminosity
+        background-color:
+          description: Background color of the container
+          type: string
+        background-crop:
+          description: 'Region of the source image to show, as four percentages of the image: left top width height, e.g. 10% 5% 60% 80%. The region is stretched to fill the layer, so give it the layer''s aspect ratio. Overrides background-size and background-position; send none to clear it. Ignored while ai-detect is on'
+          type: string
+        background-image:
+          description: Image URL to display
+          type: string
+        background-size:
+          description: background-size
+          type: string
+          enum:
+          - cover
+          - contain
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        brightness:
+          description: Brightness adjustment where 1 is normal
+          type: number
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        contrast:
+          description: Contrast adjustment where 1 is normal
+          type: number
+        grayscale:
+          description: Grayscale filter intensity from 0 to 1
+          type: number
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        png-shadow:
+          description: Drop shadow for PNG images in CSS shadow format
+          type: string
+        png-stroke-color:
+          description: Outline stroke color around PNG images
+          type: string
+        png-stroke-width:
+          description: Outline stroke width around PNG images in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        saturate:
+          description: Saturation adjustment where 1 is normal
+          type: number
+        sepia:
+          description: Sepia filter intensity from 0 to 1
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerQrCode:
+      type: object
+      description: A `qr_code` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - qr_code
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: Background color of the container
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        qr-color:
+          description: Foreground color of the QR code
+          type: string
+        qr-target:
+          description: URL or text content to encode in the QR code
+          type: string
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerRectangle:
+      type: object
+      description: A `rectangle` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - rectangle
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: Background color of the container
+          type: string
+        background-color-gradient:
+          description: Second color for a two-color gradient fill
+          type: string
+        background-gradient:
+          description: 'Full CSS gradient for the fill, e.g. linear-gradient(135deg, #f00 0%, #00f 60%, transparent 100%) — any number of stops at any angle, and radial-gradient or conic-gradient are accepted. Takes priority over background-color-gradient and is drawn on top of background-color'
+          type: string
+        background-gradient-direction:
+          description: Direction of the gradient fill
+          type: string
+          enum:
+          - left
+          - right
+          - top
+          - bottom
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    Keyframes:
+      type: object
+      description: Animation keyframes keyed by object id. Each value is an ordered array of keyframes for that object.
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          description: A single animation keyframe. Timing fields (delay/duration/endDelay) advance the object's timeline; any of the animatable attributes sets a target value the object tweens to over `duration` ms. Blank fields are ignored — omit any attribute you don't want to animate.
+          properties:
+            delay:
+              type: integer
+              minimum: 0
+              maximum: 10000
+              description: Milliseconds to wait after the previous frame ends before this frame's tween starts. Capped at 10000.
+            duration:
+              type: integer
+              minimum: 0
+              maximum: 10000
+              description: Milliseconds the tween runs for. Must be > 0 for the frame to occupy time. Capped at 10000.
+            endDelay:
+              type: integer
+              minimum: 0
+              maximum: 10000
+              description: Milliseconds to hold the frame's final state before the next frame's delay starts. Capped at 10000.
+            easing:
+              type: string
+              enum:
+              - linear
+              - easeInQuad
+              - easeOutQuad
+              - easeInOutQuad
+              - easeInCubic
+              - easeOutCubic
+              - easeInOutCubic
+              - easeInQuart
+              - easeOutQuart
+              - easeInOutQuart
+              - easeInQuint
+              - easeOutQuint
+              - easeInOutQuint
+              - easeInSine
+              - easeOutSine
+              - easeInOutSine
+              - easeInExpo
+              - easeOutExpo
+              - easeInOutExpo
+              - easeInCirc
+              - easeOutCirc
+              - easeInOutCirc
+              - easeInBack
+              - easeOutBack
+              - easeInOutBack
+              - easeInBounce
+              - easeOutBounce
+              - easeInOutBounce
+              - easeInElastic
+              - easeOutElastic
+              - easeInOutElastic
+              description: anime.js easing function applied to this frame's tween. Defaults to easeInOutQuad.
+            left:
+              type: number
+              description: Target x position in pixels
+            top:
+              type: number
+              description: Target y position in pixels
+            width:
+              type: number
+              minimum: 1
+              description: Target width in pixels
+            height:
+              type: number
+              minimum: 1
+              description: Target height in pixels
+            scale:
+              type: number
+              description: CSS scale multiplier (1 = no change)
+            blur:
+              type: number
+              minimum: 0
+              description: CSS blur radius in pixels
+            opacity:
+              type: number
+              minimum: 0
+              maximum: 1
+              description: 0 (fully transparent) to 1 (fully opaque)
+            rotate:
+              type: number
+              description: 2D rotation in degrees
+            rotateX:
+              type: number
+              minimum: -180
+              maximum: 180
+              description: 3D rotation around the X axis in degrees
+            rotateY:
+              type: number
+              minimum: -180
+              maximum: 180
+              description: 3D rotation around the Y axis in degrees
+            rotateZ:
+              type: number
+              minimum: -360
+              maximum: 360
+              description: 3D rotation around the Z axis in degrees
+            perspective:
+              type: number
+              minimum: 0
+              maximum: 5000
+              description: Perspective distance in pixels applied to the object's container. Required for rotateX/Y/Z to render as true 3D — without it, rotations appear flat.
+            background-size:
+              type: string
+              description: CSS background-size value (e.g. `cover`, `contain`, `100% 100%`)
+            background-position:
+              type: string
+              description: CSS background-position value (e.g. `50% 50%`, `top left`)
+            text-effect:
+              type: string
+              enum:
+              - FadeIn
+              - FadeOut
+              - ZoomIn
+              - ZoomOut
+              - GetBigger
+              - GetSmaller
+              - ScaleIn
+              - ScaleOut
+              - PopIn
+              - PopOut
+              description: Text layers only — cascades the named preset across each word in the text container. Ignored on non-text objects.
+            text-effect-speed:
+              oneOf:
+              - type: string
+                enum:
+                - auto
+              - type: integer
+                enum:
+                - 100
+                - 200
+                - 300
+                - 400
+                - 500
+              description: Per-word stagger in ms. `auto` divides the frame's duration evenly across words.
+            text-effect-easing:
+              type: string
+              enum:
+              - linear
+              - easeInQuad
+              - easeOutQuad
+              - easeInOutQuad
+              - easeInCubic
+              - easeOutCubic
+              - easeInOutCubic
+              - easeInQuart
+              - easeOutQuart
+              - easeInOutQuart
+              - easeInQuint
+              - easeOutQuint
+              - easeInOutQuint
+              - easeInSine
+              - easeOutSine
+              - easeInOutSine
+              - easeInExpo
+              - easeOutExpo
+              - easeInOutExpo
+              - easeInCirc
+              - easeOutCirc
+              - easeInOutCirc
+              - easeInBack
+              - easeOutBack
+              - easeInOutBack
+              - easeInBounce
+              - easeOutBounce
+              - easeInOutBounce
+              - easeInElastic
+              - easeOutElastic
+              - easeInOutElastic
+              description: Easing applied to each word's cascade. Falls back to the frame's `easing` if omitted.
+    LayerLottie:
+      type: object
+      description: A `lottie` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - lottie
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        aspect-ratio-locked:
+          description: aspect-ratio-locked
+          type: boolean
+        background-color:
+          description: background-color
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        lottie-delay:
+          description: Milliseconds to wait after the animation starts before this Lottie begins playing
+          type: number
+        lottie-loop:
+          description: Whether the Lottie repeats when it reaches its end, rather than holding its last frame
+          type: boolean
+        lottie-url:
+          description: URL of the Lottie JSON file to play
+          type: string
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    Layer:
+      oneOf:
+      - $ref: '#/components/schemas/LayerText'
+      - $ref: '#/components/schemas/LayerRectangle'
+      - $ref: '#/components/schemas/LayerRectangleImageContainer'
+      - $ref: '#/components/schemas/LayerCircle'
+      - $ref: '#/components/schemas/LayerCircleImageContainer'
+      - $ref: '#/components/schemas/LayerImage'
+      - $ref: '#/components/schemas/LayerSvgShape'
+      - $ref: '#/components/schemas/LayerQrCode'
+      - $ref: '#/components/schemas/LayerBarCode'
+      - $ref: '#/components/schemas/LayerRating'
+      - $ref: '#/components/schemas/LayerLottie'
+      - $ref: '#/components/schemas/LayerAnimatedBackground'
+      - $ref: '#/components/schemas/LayerAudioWave'
+      - $ref: '#/components/schemas/LayerGroup'
+      discriminator:
+        propertyName: type
+        mapping:
+          text: '#/components/schemas/LayerText'
+          rectangle: '#/components/schemas/LayerRectangle'
+          rectangle_image_container: '#/components/schemas/LayerRectangleImageContainer'
+          circle: '#/components/schemas/LayerCircle'
+          circle_image_container: '#/components/schemas/LayerCircleImageContainer'
+          image: '#/components/schemas/LayerImage'
+          svg_shape: '#/components/schemas/LayerSvgShape'
+          qr_code: '#/components/schemas/LayerQrCode'
+          bar_code: '#/components/schemas/LayerBarCode'
+          rating: '#/components/schemas/LayerRating'
+          lottie: '#/components/schemas/LayerLottie'
+          animated_background: '#/components/schemas/LayerAnimatedBackground'
+          audio_wave: '#/components/schemas/LayerAudioWave'
+          group: '#/components/schemas/LayerGroup'
+    LayerBarCode:
+      type: object
+      description: A `bar_code` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - bar_code
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: Background color of the container
+          type: string
+        barcode-color:
+          description: Foreground color of the barcode
+          type: string
+        barcode-data:
+          description: Data to encode in the barcode
+          type: string
+        barcode-format:
+          description: Barcode encoding format
+          type: string
+          enum:
+          - CODE128
+          - EAN13
+          - UPC
+          - EAN8
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerAudioWave:
+      type: object
+      description: A `audio_wave` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - audio_wave
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        aspect-ratio-locked:
+          description: aspect-ratio-locked
+          type: boolean
+        audio-url:
+          description: URL of the audio file the wave follows
+          type: string
+        background-color:
+          description: background-color
+          type: string
+        background-image:
+          description: background-image
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        wave-bars:
+          description: Number of bars
+          type: number
+        wave-color:
+          description: Colour of the bars
+          type: string
+        wave-envelope:
+          description: Loudness samples the wave is drawn from, 25 per second from 0 to 1, comma-separated — set automatically when the audio URL is analysed
+          type: string
+        wave-gap:
+          description: Gap between bars in pixels
+          type: number
+        wave-min-height:
+          description: Height of a bar in silence, as a percentage of the layer
+          type: number
+        wave-mirror:
+          description: Grow the bars from the middle in both directions rather than up from the bottom
+          type: boolean
+        wave-offset:
+          description: Milliseconds into the audio at which the animation starts
+          type: number
+        wave-radius:
+          description: Corner radius of each bar in pixels
+          type: number
+        wave-sensitivity:
+          description: Scales how far the bars move — above 1 exaggerates quiet passages
+          type: number
+        width:
+          description: width
+          type: number
+    LayerCircleImageContainer:
+      type: object
+      description: A `circle_image_container` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - circle_image_container
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        ai-background-generate:
+          description: Whether the container should generate its background image via AI when an ai-prompt is supplied in the API request
+          type: string
+          enum:
+          - disabled
+          - enabled
+        ai-background-remove:
+          description: Whether to automatically remove the background of images submitted to this container via the API
+          type: string
+          enum:
+          - disabled
+          - enabled
+        ai-detect:
+          description: AI detection mode for automatic image positioning
+          type: string
+          enum:
+          - 'off'
+          - face
+          - subject
+        ai-detect-anchor:
+          description: Manual anchor point override for AI detection in x:y format (0-100)
+          type: string
+        ai-detect-focus:
+          description: Which detection to focus on when multiple are found
+          type: string
+          enum:
+          - first
+          - largest
+          - group
+        ai-detect-on-fail:
+          description: Fallback background-size when no face or subject is detected
+          type: string
+          enum:
+          - fallback_cover
+          - fallback_contain
+        ai-detect-zoom:
+          description: Zoom level for AI detection crop
+          type: string
+          enum:
+          - auto
+          - 50%
+          - 60%
+          - 70%
+          - 80%
+          - 90%
+        ai-model:
+          description: Which AI model generates this layer's background. Costs vary by model — Flux Schnell is a tenth the price of Flux 1.1 Pro. Can be overridden per request by sending ai-model alongside ai-prompt
+          type: string
+          enum:
+          - flux_schnell
+          - flux_1_1_pro
+          - nano_banana
+          - gpt_image_2
+        ai-prompt:
+          description: Prompt for AI background generation — applies when the layer has ai-background-generate enabled
+          type: string
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        aspect-ratio-locked:
+          description: aspect-ratio-locked
+          type: boolean
+        background-blend-mode:
+          description: Blend mode applied to the background image
+          type: string
+          enum:
+          - normal
+          - multiply
+          - screen
+          - overlay
+          - darken
+          - lighten
+          - color-dodge
+          - color-burn
+          - hard-light
+          - soft-light
+          - difference
+          - exclusion
+          - hue
+          - saturation
+          - color
+          - luminosity
+        background-color:
+          description: Background color of the container
+          type: string
+        background-color-gradient:
+          description: Second color for a two-color gradient fill
+          type: string
+        background-crop:
+          description: 'Region of the source image to show, as four percentages of the image: left top width height, e.g. 10% 5% 60% 80%. The region is stretched to fill the layer, so give it the layer''s aspect ratio. Overrides background-size and background-position; send none to clear it. Ignored while ai-detect is on'
+          type: string
+        background-gradient:
+          description: 'Full CSS gradient for the fill, e.g. linear-gradient(135deg, #f00 0%, #00f 60%, transparent 100%) — any number of stops at any angle, and radial-gradient or conic-gradient are accepted. Takes priority over background-color-gradient and is drawn on top of background-color'
+          type: string
+        background-gradient-direction:
+          description: Direction of the gradient fill
+          type: string
+          enum:
+          - left
+          - right
+          - top
+          - bottom
+        background-image:
+          description: Image URL to display in the container
+          type: string
+        background-position:
+          description: Anchor position for the background image within the container — most useful when background-size is contain
+          type: string
+          enum:
+          - center
+          - top
+          - right
+          - bottom
+          - left
+          - top left
+          - top right
+          - bottom left
+          - bottom right
+        background-size:
+          description: background-size
+          type: string
+          enum:
+          - cover
+          - contain
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        brightness:
+          description: Brightness adjustment where 1 is normal
+          type: number
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        contrast:
+          description: Contrast adjustment where 1 is normal
+          type: number
+        grayscale:
+          description: Grayscale filter intensity from 0 to 1
+          type: number
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        png-shadow:
+          description: Drop shadow for PNG images in CSS shadow format
+          type: string
+        png-stroke-color:
+          description: Outline stroke color around PNG images
+          type: string
+        png-stroke-width:
+          description: Outline stroke width around PNG images in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: responsive-aspect-ratio
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        saturate:
+          description: Saturation adjustment where 1 is normal
+          type: number
+        sepia:
+          description: Sepia filter intensity from 0 to 1
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerAnimatedBackground:
+      type: object
+      description: A `animated_background` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - animated_background
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        aspect-ratio-locked:
+          description: aspect-ratio-locked
+          type: boolean
+        background-color:
+          description: background-color
+          type: string
+        background-image:
+          description: background-image
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        motion-blur:
+          description: Softness of the background in pixels
+          type: number
+        motion-color:
+          description: Colour of the background — its hue drives the preset, so any colour of that hue gives the same result
+          type: string
+        motion-cycle:
+          description: Milliseconds for one full loop of the background motion
+          type: number
+        motion-hue:
+          description: Base hue of the background, 0-360
+          type: number
+        motion-preset:
+          description: Which moving background preset to draw
+          type: string
+          enum:
+          - aurora
+          - mesh
+          - conic
+          - pulse
+        motion-spread:
+          description: How far the secondary colours sit from the base hue, in degrees
+          type: number
+        motion-travel:
+          description: How far the background moves, as a percentage of the layer
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerRating:
+      type: object
+      description: A `rating` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - rating
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: Background color of the container
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        rating-background-color:
+          description: Fill color for inactive rating shapes
+          type: string
+        rating-color:
+          description: Fill color for active rating shapes
+          type: string
+        rating-count:
+          description: Number of shapes to display
+          type: number
+        rating-gap:
+          description: Gap between rating shapes in pixels
+          type: number
+        rating-score:
+          description: Rating score from 0 to 100
+          type: number
+        rating-shadow:
+          description: Drop shadow for rating shapes in CSS shadow format
+          type: string
+        rating-shape:
+          description: Shape used for each rating unit
+          type: string
+          enum:
+          - star
+          - cute_star
+          - heart
+          - circle
+          - diamond
+          - square
+          - hexagon
+        rating-stroke-color:
+          description: Outline stroke color for rating shapes
+          type: string
+        rating-stroke-width:
+          description: Outline stroke width for rating shapes in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerRectangleImageContainer:
+      type: object
+      description: A `rectangle_image_container` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - rectangle_image_container
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        ai-background-generate:
+          description: Whether the container should generate its background image via AI when an ai-prompt is supplied in the API request
+          type: string
+          enum:
+          - disabled
+          - enabled
+        ai-background-remove:
+          description: Whether to automatically remove the background of images submitted to this container via the API
+          type: string
+          enum:
+          - disabled
+          - enabled
+        ai-detect:
+          description: AI detection mode for automatic image positioning
+          type: string
+          enum:
+          - 'off'
+          - face
+          - subject
+        ai-detect-anchor:
+          description: Manual anchor point override for AI detection in x:y format (0-100)
+          type: string
+        ai-detect-focus:
+          description: Which detection to focus on when multiple are found
+          type: string
+          enum:
+          - first
+          - largest
+          - group
+        ai-detect-on-fail:
+          description: Fallback background-size when no face or subject is detected
+          type: string
+          enum:
+          - fallback_cover
+          - fallback_contain
+        ai-detect-zoom:
+          description: Zoom level for AI detection crop
+          type: string
+          enum:
+          - auto
+          - 50%
+          - 60%
+          - 70%
+          - 80%
+          - 90%
+        ai-model:
+          description: Which AI model generates this layer's background. Costs vary by model — Flux Schnell is a tenth the price of Flux 1.1 Pro. Can be overridden per request by sending ai-model alongside ai-prompt
+          type: string
+          enum:
+          - flux_schnell
+          - flux_1_1_pro
+          - nano_banana
+          - gpt_image_2
+        ai-prompt:
+          description: Prompt for AI background generation — applies when the layer has ai-background-generate enabled
+          type: string
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-blend-mode:
+          description: Blend mode applied to the background image
+          type: string
+          enum:
+          - normal
+          - multiply
+          - screen
+          - overlay
+          - darken
+          - lighten
+          - color-dodge
+          - color-burn
+          - hard-light
+          - soft-light
+          - difference
+          - exclusion
+          - hue
+          - saturation
+          - color
+          - luminosity
+        background-color:
+          description: Background color of the container
+          type: string
+        background-color-gradient:
+          description: Second color for a two-color gradient fill
+          type: string
+        background-crop:
+          description: 'Region of the source image to show, as four percentages of the image: left top width height, e.g. 10% 5% 60% 80%. The region is stretched to fill the layer, so give it the layer''s aspect ratio. Overrides background-size and background-position; send none to clear it. Ignored while ai-detect is on'
+          type: string
+        background-gradient:
+          description: 'Full CSS gradient for the fill, e.g. linear-gradient(135deg, #f00 0%, #00f 60%, transparent 100%) — any number of stops at any angle, and radial-gradient or conic-gradient are accepted. Takes priority over background-color-gradient and is drawn on top of background-color'
+          type: string
+        background-gradient-direction:
+          description: Direction of the gradient fill
+          type: string
+          enum:
+          - left
+          - right
+          - top
+          - bottom
+        background-image:
+          description: Image URL to display in the container
+          type: string
+        background-position:
+          description: Anchor position for the background image within the container — most useful when background-size is contain
+          type: string
+          enum:
+          - center
+          - top
+          - right
+          - bottom
+          - left
+          - top left
+          - top right
+          - bottom left
+          - bottom right
+        background-size:
+          description: background-size
+          type: string
+          enum:
+          - cover
+          - contain
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        brightness:
+          description: Brightness adjustment where 1 is normal
+          type: number
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        contrast:
+          description: Contrast adjustment where 1 is normal
+          type: number
+        grayscale:
+          description: Grayscale filter intensity from 0 to 1
+          type: number
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        png-shadow:
+          description: Drop shadow for PNG images in CSS shadow format
+          type: string
+        png-stroke-color:
+          description: Outline stroke color around PNG images
+          type: string
+        png-stroke-width:
+          description: Outline stroke width around PNG images in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        saturate:
+          description: Saturation adjustment where 1 is normal
+          type: number
+        sepia:
+          description: Sepia filter intensity from 0 to 1
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerGroup:
+      type: object
+      description: A `group` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - group
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: Background color of the container
+          type: string
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        collapsed:
+          description: collapsed
+          type: boolean
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+    LayerSvgShape:
+      type: object
+      description: A `svg_shape` layer.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: Unique layer id within the config
+        type:
+          type: string
+          enum:
+          - svg_shape
+          description: Layer type discriminator
+        name:
+          type: string
+          description: Optional human-readable layer name
+        anchor-gap-x:
+          description: Horizontal offset from the anchor point in pixels
+          type: number
+        anchor-gap-y:
+          description: Vertical offset from the anchor point in pixels
+          type: number
+        anchor-point:
+          description: Which point on the target layer to anchor to
+          type: string
+          enum:
+          - top-left
+          - top-center
+          - top-right
+          - center-left
+          - center
+          - center-right
+          - bottom-left
+          - bottom-center
+          - bottom-right
+        anchor-to:
+          description: Name of another layer to anchor this layer's position to
+          type: string
+        anchor-type:
+          description: Whether to anchor to the container bounds or text bounds
+          type: string
+          enum:
+          - container
+          - text
+        background-color:
+          description: Background color of the container
+          type: string
+        background-color-gradient:
+          description: Second color for a two-color gradient fill
+          type: string
+        background-gradient:
+          description: 'Full CSS gradient for the fill, e.g. linear-gradient(135deg, #f00 0%, #00f 60%, transparent 100%) — any number of stops at any angle, and radial-gradient or conic-gradient are accepted. Takes priority over background-color-gradient and is drawn on top of background-color'
+          type: string
+        background-gradient-direction:
+          description: Direction of the gradient fill
+          type: string
+          enum:
+          - left
+          - right
+          - top
+          - bottom
+        basic-shape:
+          description: The SVG shape to render
+          type: string
+          enum:
+          - triangle
+          - scalene
+          - pentagon
+          - right
+          - trapeze
+          - kite
+          - polygon
+          - parallelogram
+          - ellipse
+          - trefoil
+          - star
+          - semicircle
+          - hexagon
+          - crescent
+          - octagon
+          - cross
+          - ring
+          - heart
+          - arrow
+          - rhombus
+          - custom
+        blur:
+          description: Gaussian blur radius in pixels
+          type: number
+        border-color:
+          description: border-color
+          type: string
+        border-radius:
+          description: Border radius in pixels for rounded corners
+          type: number
+        border-style:
+          description: border-style
+          type: string
+          enum:
+          - none
+          - solid
+        border-width:
+          description: border-width
+          type: number
+        box-shadow:
+          description: box-shadow
+          type: string
+        clip-mode:
+          description: How clip-to hides this layer. outline cuts it to the target's shape. alpha also fades it by the transparency of the target's fill — its background-gradient, or else its background-color — so a gradient running to transparent fades this layer out. Hide the target layer to use it as a mask only
+          type: string
+          enum:
+          - outline
+          - alpha
+        clip-to:
+          description: 'Id or name of another layer to clip this layer to — only the part inside that layer''s box is drawn, following its border-radius and rotation. Clips chain: a layer clipped to a layer that is itself clipped shows only inside both'
+          type: string
+        fill:
+          description: Fill color of the shape
+          type: string
+        height:
+          description: height
+          type: number
+        hidden:
+          description: Hide or show this layer
+          type: boolean
+        left:
+          description: left
+          type: number
+        opacity:
+          description: Opacity from 0 (transparent) to 1 (opaque)
+          type: number
+        padding:
+          description: padding
+          type: number
+        perspective:
+          description: Perspective distance for 3D transforms in pixels
+          type: number
+        responsive-anchor-gap:
+          description: How the anchor gap adjusts when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - scale-x
+          - scale-y
+          - stretch
+          - stretch-x
+          - stretch-y
+        responsive-aspect-ratio:
+          description: Whether the layer keeps its aspect ratio when responsively resized
+          type: string
+          enum:
+          - free
+          - locked
+        responsive-position:
+          description: How the layer repositions when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - center-x
+          - center-y
+          - center
+          - pin-right
+          - pin-bottom
+          - pin-right-bottom
+          - center-x-pin-bottom
+          - center-y-pin-right
+        responsive-size:
+          description: How the layer resizes when the template is resized
+          type: string
+          enum:
+          - none
+          - scale
+          - stretch-x
+          - stretch-y
+          - stretch
+        rotate:
+          description: Rotation angle in degrees
+          type: number
+        rotateX:
+          description: 3D rotation around the X axis in degrees
+          type: number
+        rotateY:
+          description: 3D rotation around the Y axis in degrees
+          type: number
+        rotateZ:
+          description: 3D rotation around the Z axis in degrees
+          type: number
+        stroke:
+          description: Stroke color of the shape outline
+          type: string
+        stroke-width:
+          description: Stroke width of the shape outline in pixels
+          type: number
+        svg-url:
+          description: URL of the SVG file to draw when basic-shape is custom. The file keeps its own colors unless fill, a gradient or a stroke is set
+          type: string
+        top:
+          description: top
+          type: number
+        width:
+          description: width
+          type: number
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)

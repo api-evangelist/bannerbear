@@ -1,0 +1,340 @@
+openapi: 3.2.0
+info:
+  title: Bannerbear V5 Webhooks API
+  version: '5.0'
+servers:
+- url: https://api.bannerbear.com/v5
+  description: Async render host. All endpoints.
+- url: https://sync.api.bannerbear.com/v5
+  description: Synchronous render host. Only accepts POST /images — returns the finished image inline instead of a pending record. Long-running requests may return 408.
+security:
+- bearerAuth: []
+tags:
+- name: Webhooks
+paths:
+  /webhooks:
+    get:
+      summary: List webhooks
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        '200':
+          description: Paginated list of webhooks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: string
+                    name:
+                      type: string
+                    url:
+                      type: string
+                      format: uri
+                    resource:
+                      type: string
+                      enum:
+                      - image
+                      - batch
+                      - tool_job
+                      - workflow_run
+                      - animation
+                    event:
+                      type: string
+                      enum:
+                      - all_events
+                      - completed
+                      - failed
+                    status:
+                      type: string
+                      enum:
+                      - active
+                      - disabled
+                    created_at:
+                      type: string
+                      format: date-time
+      tags:
+      - Webhooks
+      operationId: getWebhooks
+      x-operation-id-source: derived
+    post:
+      summary: Create a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - url
+              properties:
+                name:
+                  type: string
+                  description: Webhook name
+                url:
+                  type: string
+                  format: uri
+                  description: URL to receive webhook events
+                resource:
+                  type: string
+                  enum:
+                  - image
+                  - batch
+                  - tool_job
+                  - workflow_run
+                  - animation
+                  description: Resource type to trigger on
+                event:
+                  type: string
+                  enum:
+                  - all_events
+                  - completed
+                  - failed
+                  description: Event type to trigger on
+                status:
+                  type: string
+                  enum:
+                  - active
+                  - disabled
+                  description: Webhook status
+      responses:
+        '201':
+          description: Webhook created. The signing_key field is only returned here — store it now.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                  resource:
+                    type: string
+                    enum:
+                    - image
+                    - batch
+                    - tool_job
+                    - workflow_run
+                    - animation
+                  event:
+                    type: string
+                    enum:
+                    - all_events
+                    - completed
+                    - failed
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - disabled
+                  created_at:
+                    type: string
+                    format: date-time
+                  signing_key:
+                    type: string
+                    description: HMAC signing key. Only returned at creation time — store it now.
+        '422':
+          description: Validation failure — e.g. missing name/url, invalid resource/event/scope enum
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Webhooks
+      operationId: postWebhooks
+      x-operation-id-source: derived
+  /webhooks/{uid}:
+    get:
+      summary: Get a webhook
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Webhook details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                  resource:
+                    type: string
+                    enum:
+                    - image
+                    - batch
+                    - tool_job
+                    - workflow_run
+                    - animation
+                  event:
+                    type: string
+                    enum:
+                    - all_events
+                    - completed
+                    - failed
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - disabled
+                  created_at:
+                    type: string
+                    format: date-time
+      tags:
+      - Webhooks
+      operationId: getWebhooksByUid
+      x-operation-id-source: derived
+    patch:
+      summary: Update a webhook
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - url
+              properties:
+                name:
+                  type: string
+                  description: Webhook name
+                url:
+                  type: string
+                  format: uri
+                  description: URL to receive webhook events
+                resource:
+                  type: string
+                  enum:
+                  - image
+                  - batch
+                  - tool_job
+                  - workflow_run
+                  - animation
+                  description: Resource type to trigger on
+                event:
+                  type: string
+                  enum:
+                  - all_events
+                  - completed
+                  - failed
+                  description: Event type to trigger on
+                status:
+                  type: string
+                  enum:
+                  - active
+                  - disabled
+                  description: Webhook status
+      responses:
+        '200':
+          description: Updated webhook
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                  name:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                  resource:
+                    type: string
+                    enum:
+                    - image
+                    - batch
+                    - tool_job
+                    - workflow_run
+                    - animation
+                  event:
+                    type: string
+                    enum:
+                    - all_events
+                    - completed
+                    - failed
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - disabled
+                  created_at:
+                    type: string
+                    format: date-time
+        '404':
+          description: Webhook not found in this workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+        '422':
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Human-readable explanation of the error
+      tags:
+      - Webhooks
+      operationId: patchWebhooksByUid
+      x-operation-id-source: derived
+    delete:
+      summary: Delete a webhook
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Webhook deleted
+      tags:
+      - Webhooks
+      operationId: deleteWebhooksByUid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key (e.g. bb_ak_v5_...)
