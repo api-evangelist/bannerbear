@@ -322,6 +322,8 @@ apis:
   humanURL: https://developers.bannerbear.com/
   baseURL: https://api.bannerbear.com/v2
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
