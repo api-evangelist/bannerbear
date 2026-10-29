@@ -1,4 +1,4 @@
-# Bannerbear (bannerbear)
+# Bannerbear
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,179 +66,138 @@
 
 Bannerbear is an API-first platform for auto-generating images and videos from reusable templates. A single REST API call applies text, image, and color modifications to a template and renders branded marketing visuals, social media graphics, animated GIFs, screenshots, and videos at scale, with asynchronous webhook and polling delivery.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/bannerbear/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/bannerbear/refs/heads/main/apis.yml)
+**Areas:** Image Generation · Video Generation · Templates · Media · Automation
 
-## Tags
+## Bannerbear on APIs.io
 
-- Image Generation
-- Video Generation
-- Templates
-- Media
-- Automation
+Everything profiled for Bannerbear is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/bannerbear/](https://apis.io/providers/bannerbear/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (8)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Bannerbear Animated GIFs API](https://apis.io/apis/bannerbear/bannerbear-animated-gifs-api/) — Build animated GIFs from template frames.
+- [Bannerbear Auth API](https://apis.io/apis/bannerbear/bannerbear-auth-api/) — API key verification and account status.
+- [Bannerbear Collections API](https://apis.io/apis/bannerbear/bannerbear-collections-api/) — Generate multiple images from a template set.
+- [Bannerbear Fonts API](https://apis.io/apis/bannerbear/bannerbear-fonts-api/) — Reference fonts and effects.
+- [Bannerbear Images API](https://apis.io/apis/bannerbear/bannerbear-images-api/) — Auto-generate images from templates.
+- [Bannerbear Screenshots API](https://apis.io/apis/bannerbear/bannerbear-screenshots-api/) — Capture web page screenshots by URL.
+- [Bannerbear Templates API](https://apis.io/apis/bannerbear/bannerbear-templates-api/) — Manage templates and template sets.
+- [Bannerbear Videos API](https://apis.io/apis/bannerbear/bannerbear-videos-api/) — Render videos from video templates.
 
-## APIs
+### Published properties
 
-### Bannerbear Images API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Auto-generate images from a template by POSTing a modifications array of text, image, and color layer changes. Supports transparent PNG output, PDF rendering, asynchronous webhook callbacks, polling, and a synchronous endpoint.
+#### MCP servers (1)
 
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [bannerbear](https://apis.io/servers/bannerbear/bannerbear/)
 
-- Images
-- Image Generation
-- Templates
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://www.bannerbear.com/product/image-generation-api/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Bannerbear Agentic Access](https://apis.io/agentic-access/bannerbear/bannerbear-agentic-access/)
 
-### Bannerbear Videos API
+#### Collections (9)
 
-Render videos from a video template using Overlay, Transcribe, and Multi Overlay build packs, with input media, zoom, blur, trimming, frames, and optional GIF preview generation.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
+- [Bannerbear API](https://apis.io/collections/bannerbear/open-bannerbear/)
+- [Bannerbear Animated GIFs API](https://apis.io/collections/bannerbear/open-bannerbear-animated-gifs-api/)
+- [Bannerbear Animated GIFs Auth API](https://apis.io/collections/bannerbear/open-bannerbear-auth-api/)
+- [Bannerbear Animated GIFs Collections API](https://apis.io/collections/bannerbear/open-bannerbear-collections-api/)
+- [Bannerbear Animated GIFs Fonts API](https://apis.io/collections/bannerbear/open-bannerbear-fonts-api/)
+- [Bannerbear Animated GIFs Images API](https://apis.io/collections/bannerbear/open-bannerbear-images-api/)
+- [Bannerbear Animated GIFs Screenshots API](https://apis.io/collections/bannerbear/open-bannerbear-screenshots-api/)
+- [Bannerbear Animated GIFs Templates API](https://apis.io/collections/bannerbear/open-bannerbear-templates-api/)
+- [Bannerbear Animated GIFs Videos API](https://apis.io/collections/bannerbear/open-bannerbear-videos-api/)
 
-#### Tags
+#### Security (2)
 
-- Videos
-- Video Generation
-- Build Packs
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Bannerbear Authentication](https://apis.io/security/bannerbear/bannerbear-authentication/)
+- [Bannerbear Domain Security](https://apis.io/security/bannerbear/bannerbear-domain-security/)
 
-- [Documentation](https://www.bannerbear.com/product/video-generation-api/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Plans and pricing (1)
 
-### Bannerbear Collections API
+Published plans, tiers and prices.
 
-Generate multiple images at once from a template set by applying one set of modifications across every template in the set, with webhook and synchronous delivery options.
+- [Bannerbear Plans Pricing](https://apis.io/plans/bannerbear/bannerbear-plans-pricing/)
 
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
+#### Rate limits (1)
 
-#### Tags
+Published request limits.
 
-- Collections
-- Template Sets
-- Batch
+- [Bannerbear Rate Limits](https://apis.io/rate-limits/bannerbear/bannerbear-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [Documentation](https://www.bannerbear.com/help/articles/159-create-a-collection-via-api/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+What the API costs to run, by operation.
 
-### Bannerbear Screenshots API
+- [Bannerbear Finops](https://apis.io/finops/bannerbear/bannerbear-finops/)
 
-Capture screenshots of any web page by URL, with configurable browser width, full-page or fixed height, mobile user agent, and language, delivered asynchronously or synchronously.
+## Where to find this API
 
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Tags
-
-- Screenshots
-- Web Capture
-
-#### Properties
-
-- [Documentation](https://www.bannerbear.com/product/url-to-screenshot-api/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Bannerbear Animated GIFs API
-
-Build animated GIFs from a template by supplying an array of frames (up to 30), each its own modifications array, with configurable frame rate, per-frame durations, and looping.
-
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
-
-#### Tags
-
-- Animated GIFs
-- Animation
-
-#### Properties
-
-- [Documentation](https://developers.bannerbear.com/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Bannerbear Templates and Template Sets API
-
-Create, duplicate, import, retrieve, update, list, and delete templates, and group templates into template sets for collection generation, with tag, name, and extended-layer filtering.
-
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
-
-#### Tags
-
-- Templates
-- Template Sets
-- Management
-
-#### Properties
-
-- [Documentation](https://developers.bannerbear.com/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Bannerbear Fonts and Effects API
-
-List the fonts and image effects available to a project so they can be referenced by name inside template modifications and editor sessions.
-
-- **Human URL:** [https://developers.bannerbear.com/](https://developers.bannerbear.com/)
-- **Base URL:** `https://api.bannerbear.com/v2`
-
-#### Tags
-
-- Fonts
-- Effects
-- Reference
-
-#### Properties
-
-- [Documentation](https://developers.bannerbear.com/)
-- [API Reference](https://developers.bannerbear.com/)
-- [OpenAPI](openapi/bannerbear-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/bannerbear.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/bannerbear.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/yongfook)
-- [LinkedIn](https://www.linkedin.com/company/bannerbear)
 - [Website](https://www.bannerbear.com)
 - [Documentation](https://developers.bannerbear.com/)
-- [Plans](plans/bannerbear-plans-pricing.yml)
-- [Rate Limits](rate-limits/bannerbear-rate-limits.yml)
-- [Fin Ops](finops/bannerbear-finops.yml)
+- [Blog](https://www.bannerbear.com/blog/feed.xml)
+- [GitHub](https://github.com/yongfook)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.4** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 47.5 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 45.8** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 11.8** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/bannerbear/](https://apis.io/providers/bannerbear/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Bannerbear: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/bannerbear/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
